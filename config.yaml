@@ -1,0 +1,67 @@
+---
+!!map {
+  ? !!str "WhergBot"
+  : !!map {
+    ? !!str "channels"
+    : !!seq [
+      !!str "#h",
+    ],
+    ? !!str "enabled"
+    : !!bool "true",
+    ? !!str "exec.allowed"
+    : !!seq [
+      !!str "Ferus!anonymous@the.interwebs",
+    ],
+    ? !!str "host"
+    : !!str "127.0.0.1",
+    ? !!str "ident"
+    : !!str "Wherg",
+    ? !!str "nickname"
+    : !!str "WhergBot2",
+    ? !!str "oper"
+    : !!null "null",
+    ? !!str "oper_password"
+    : !!null "null",
+    ? !!str "plugins"
+    : !!seq [
+      !!str "Plugins/*/*.py",
+    ],
+    ? !!str "port"
+    : !!int "6667",
+    ? !!str "realname"
+    : !!str "WhergBot 3.0 [Ferus]",
+    ? !!str "server_password"
+    : !!null "null",
+    ? !!str "ssl"
+    : !!bool "false",
+  },
+  ? !!str "default"
+  : !!map {
+    ? !!str "channels"
+    : !!seq [
+      !!str "#hacking",
+    ],
+    ? !!str "enabled"
+    : !!bool "false",
+    ? !!str "host"
+    : !!str "irc.datnode.net",
+    ? !!str "ident"
+    : !!str "Wherg",
+    ? !!str "nickname"
+    : !!str "WhergBot",
+    ? !!str "oper"
+    : !!null "null",
+    ? !!str "oper_password"
+    : !!null "null",
+    ? !!str "plugins"
+    : !!seq [],
+    ? !!str "port"
+    : !!int "6667",
+    ? !!str "realname"
+    : !!str "WhergBot 3.0 [Ferus]",
+    ? !!str "server_password"
+    : !!null "null",
+    ? !!str "ssl"
+    : !!bool "false",
+  },
+}

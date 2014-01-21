@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-""" Basic IRC bot connection/config classes
+"""
+Basic IRC bot connection/config classes
 """
 import os
 import sys
@@ -10,7 +11,6 @@ import imp
 import glob
 import time
 import queue
-import bisect
 import threading
 
 import blackbox
@@ -39,8 +39,13 @@ class PluginError(Exception):
 
 
 class BotConfig(object):
+	#TODO finish documenting
+	#TODO find a way to use a readable YAML format while still keeping datatypes
+	#TODO possibly add each of these to the bot itself, to act as a help of sorts
+	# maybe prepend the actual settings with "help."
+	# ie: the setting `help.enabled' would be set to '(bool) True if this connection is to be started'
 	"""Returns an object with config settings
-  Settings:
+	Settings:
 
 	enabled (bool)
 		True if this connection is to be started
@@ -160,9 +165,9 @@ class Bot(object):
 
 	def quit(self, message="I am going to sleep~", reload=False):
 		"""Quits the connection and cleans up, saves bot config."""
-		for plugin in list(self.plugins):
+		for plugin in [_plugin[0] for _plugin in list(self.plugins)]:
 			# plugin = (name, [instance, priority])
-			self.plugins.unload(plugin[0])
+			self.plugins.unload(plugin)
 
 		self.config.save()
 		self.ircsock.quit(message)
@@ -173,7 +178,7 @@ class Bot(object):
 		"""Reload a specific bot, this kills the current connection and restarts it"""
 		self.quit(message="I am being reloaded, brb in 5 seconds!", reload=True)
 		self.onLoad = []
-		time.sleep(5)
+		time.sleep(5) # TODO Make this a config setting
 		self.init()
 		self.run()
 
@@ -233,7 +238,7 @@ class PluginManager(object):
 	"""Plugin Manager class, manages all plugins.
 	"""
 	def __init__(self, bot):
-		self.__plugins = {} # name: [instance, priority]
+		self.__plugins = {} # name: [instance, priority, path]
 		self.bot = bot
 
 	def __contains__(self, name):
@@ -251,17 +256,18 @@ class PluginManager(object):
 		return iter(self.__plugins.items())
 
 	def load(self, path):
-		"""Loads a plugin by path
-		Raises PluginError when module cannot be loaded, does not contain a 'Plugin'
-		class, 'Plugin' class does not contain a 'name' or 'priority' attribute,
-		'Plugin' class does not contain a finish or call method, or the 'hook' method
-		fails to return True
+		"""
+		Loads a plugin by path. `PluginError' will be raised when either:
+			A module cannot be loaded due to syntax/runtime/etc
+			The module does not contain a `Plugin' class
+			The `Plugin' class does not contain a `name' or `priority' attribute
+			The 'Plugin' class does not contain a `finish' or `call' method
+			The 'hook' method fails to return `True'
 		Returns the module name
 		"""
 		mname = os.path.splitext(os.path.split(path)[-1])[0]
 		logger.info("[Bot {0}] Attempting to load plugin {1}".format(self.bot.name, mname))
 		module = imp.load_source(mname, path)
-
 
 		if not hasattr(module, "Plugin"):
 			raise PluginError("Plugin class for plugin {0} does not exist!".format(mname))
@@ -283,10 +289,10 @@ class PluginManager(object):
 		if not instance.hook():
 			raise PluginError("Plugin class for plugin {0} can not be hooked!".format(mname))
 
-		self.__plugins[instance.name] = [instance, instance.priority]
+		self.__plugins[instance.name] = [instance, instance.priority, path]
 
-		logger.info("[Bot {0}] Loaded plugin {1}".format(self.bot.name, mname))
-		return mname
+		logger.info("[Bot {0}] Loaded plugin {1}".format(self.bot.name, instance.name))
+		return instance.name
 
 	def load_glob(self, paths):
 		"""Loads all plugins in the plugin directory."""
@@ -301,7 +307,7 @@ class PluginManager(object):
 		return plugins
 
 	def unload(self, plugin):
-		"""Unloads specified plugin by name"""
+		"""Unloads specified plugin by identifier"""
 		if plugin not in self.__plugins:
 			return False
 		self.__plugins[plugin][0].finish()
@@ -310,13 +316,14 @@ class PluginManager(object):
 
 	def reload(self, plugin):
 		"""Unloads, and reloads a plugin by name"""
-		# TODO figure out how to solve this
 		if plugin not in self.__plugins:
 			return False
+		path = self.__plugins[plugin][2]
 		self.unload(plugin)
-		#imp.reload(self.__plugins[plugin][0])
+		self.load(path)
 
 if __name__ == '__main__':
+	# Run enabled bots in config
 	bots = []
 	with open("config.yaml", "r") as _config:
 		configs = yaml.load(_config)

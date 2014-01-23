@@ -16,5 +16,5 @@ class Plugin(object):
 	def call(self, message):
 		if message.command != "PRIVMSG":
 			return None
-		if message.params[1][0] == "@bacon":
+		if message.params[1][0] == "@bacon" and len(message.params[1]) >= 2:
 			self.bot.ircsock.action(message.params[0], "cooks up some fancy bacon for {0}".format(message.params[1][1]))

@@ -339,10 +339,18 @@ if __name__ == '__main__':
 		bot.run()
 
 	# Check for dead bots, and quit when none are left
-	while len(bots) > 0:
+	# Graceful exit on ^C
+	try:
+		while len(bots) > 0:
+			bots = [bot for bot in bots if bot.running]
+			if len(bots) == 0:
+				break
+			time.sleep(20)
+	except KeyboardInterrupt:
+		print()
 		for bot in bots:
-			if not bot.running:
-				bots.remove(bot)
-				if len(bots) == 0:
-					break
-		time.sleep(20)
+			bot.quit()
+	finally:
+		sys.exit()
+
+

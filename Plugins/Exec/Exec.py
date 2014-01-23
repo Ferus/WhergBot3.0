@@ -23,10 +23,10 @@ class Plugin(object):
 	def call(self, message):
 		if message.command != "PRIVMSG":
 			return None
-		if message.params[1].startswith("!exec"):
+		if message.params[1][0] == "!exec":
 			if message.prefix[1:] in self.bot.config.get("exec.allowed"):
 				try:
-					exec(message.params[1].split("!exec ")[1])
+					exec(" ".join(message.params[1][1:]))
 				except Exception as e:
 					self.bot.ircsock.say(message.params[0], repr(e))
 			else:

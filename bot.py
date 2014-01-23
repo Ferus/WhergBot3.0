@@ -221,8 +221,14 @@ class Parser(blackbox.parser.Parser):
 
 				def sender():
 					"""Helper function to handle sending plugins the message"""
+					# Unfuck text so plugins don't have to do it themselves
+					if len(message.params) == 2:
+						message.params.append(message.params.pop(1).split(" "))
 					for plugin in plugins:
 						plugin[0].call(message)
+					# Refuck text. \( ._.)/
+					if len(message.params) == 2:
+						message.params.append(" ".join(message.params.pop(1)))
 				senderThread = threading.Thread(target=sender)
 				senderThread.daemon = True
 				senderThread.start()

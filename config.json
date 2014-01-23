@@ -1,0 +1,40 @@
+{
+    "WhergBot": {
+        "channels": [
+            "#h"
+        ],
+        "enabled": true,
+        "exec.allowed": [
+            "Ferus!anonymous@the.interwebs"
+        ],
+        "host": "localhost",
+        "ident": "Wherg",
+        "nickname": "WhergBot",
+        "oper": null,
+        "oper_password": null,
+        "plugins": [
+            "Plugins/*/*.py"
+        ],
+        "port": 6667,
+        "realname": "WhergBot 3.0 [Ferus]",
+        "server_password": null,
+        "ssl": false
+    },
+    "default": {
+        "channels": [
+            "#hacking"
+        ],
+        "enabled": false,
+        "host": "irc.datnode.net",
+        "ident": "Wherg",
+        "nickname": "WhergBot",
+        "oper": null,
+        "oper_password": null,
+        "plugins": [],
+        "port": 6667,
+        "realname": "WhergBot 3.0 [Ferus]",
+        "server_password": null,
+        "ssl": false
+    }
+}
+

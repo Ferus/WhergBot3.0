@@ -14,7 +14,7 @@ import queue
 import threading
 
 import blackbox
-import yaml
+import json
 
 logging.basicConfig(filename="bot.log", filemode='a', level=logging.INFO, \
   format="[%(levelname)s]: %(name)s - %(filename)s - %(funcName)s() at line %(lineno)d: %(message)s")
@@ -40,7 +40,6 @@ class PluginError(Exception):
 
 class BotConfig(object):
 	#TODO finish documenting
-	#TODO find a way to use a readable YAML format while still keeping datatypes
 	#TODO possibly add each of these to the bot itself, to act as a help of sorts
 	# maybe prepend the actual settings with "help."
 	# ie: the setting `help.enabled' would be set to '(bool) True if this connection is to be started'
@@ -94,16 +93,16 @@ class BotConfig(object):
 	def save(self):
 		"""Writes changes to the config file"""
 		logger.info("[Bot {0}]: Saving config file.".format(self._name))
-		with open("config.yaml", "r") as _config:
-			config = yaml.load(_config)
+		with open("config.json", "r") as _config:
+			config = json.load(_config)
 		logger.info("[Bot {0}]: Loaded old config.".format(self._name))
 
 		for key, value in self._options.items():
 			config[self._name][key] = value
 		logger.info("[Bot {0}]: Copying new values.".format(self._name))
 
-		with open("config.yaml", "w") as _config:
-			yaml.dump(config, _config, canonical=True)
+		with open("config.json", "w") as _config:
+			json.dump(config, _config, indent=4, separators=(',', ': '), sort_keys=True)
 		logger.info("[Bot {0}]: Saved config file.".format(self._name))
 
 
@@ -325,8 +324,8 @@ class PluginManager(object):
 if __name__ == '__main__':
 	# Run enabled bots in config
 	bots = []
-	with open("config.yaml", "r") as _config:
-		configs = yaml.load(_config)
+	with open("config.json", "r") as _config:
+		configs = json.load(_config)
 	for key, config in configs.items():
 		if config.get("enabled"):
 			logger.info("[Core]: Bot '{0}' is now being loaded!".format(key))

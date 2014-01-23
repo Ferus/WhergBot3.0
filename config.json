@@ -15,10 +15,10 @@
         "plugins": [
             "Plugins/*/*.py"
         ],
-        "port": 6667,
+        "port": 6697,
         "realname": "WhergBot 3.0 [Ferus]",
         "server_password": null,
-        "ssl": false
+        "ssl": true
     },
     "default": {
         "channels": [

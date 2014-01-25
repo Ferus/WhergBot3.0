@@ -1,40 +1,86 @@
 {
-    "WhergBot": {
-        "channels": [
-            "#h"
-        ],
-        "enabled": true,
-        "exec.allowed": [
-            "Ferus!anonymous@the.interwebs"
-        ],
-        "host": "localhost",
-        "ident": "Wherg",
-        "nickname": "WhergBot",
-        "oper": null,
-        "oper_password": null,
-        "plugins": [
-            "Plugins/*/*.py"
-        ],
-        "port": 6697,
-        "realname": "WhergBot 3.0 [Ferus]",
-        "server_password": null,
-        "ssl": true
-    },
     "default": {
-        "channels": [
-            "#hacking"
+        "bacon": [
+            null,
+            "To cook bacon for someone, use @bacon"
         ],
-        "enabled": false,
-        "host": "irc.datnode.net",
-        "ident": "Wherg",
-        "nickname": "WhergBot",
-        "oper": null,
-        "oper_password": null,
-        "plugins": [],
-        "port": 6667,
-        "realname": "WhergBot 3.0 [Ferus]",
-        "server_password": null,
-        "ssl": false
+        "channels": [
+            [
+                "#hacking"
+            ]
+        ],
+        "enabled": [
+            false
+        ],
+        "exec": [
+            null,
+            "Exec executes a given python string"
+        ],
+        "exec.allowed": [
+            [
+                "Ferus!anonymous@the.interwebs"
+            ],
+            "(list) Holds a list of full IRC hostmasks (nick!ident@host) of people who are allowed to use the !exec command"
+        ],
+        "general": [
+            null,
+            "Supplies plugin @reload, @join, @part, and @quit"
+        ],
+        "host": [
+            "irc.datnode.net"
+        ],
+        "ident": [
+            "Wherg"
+        ],
+        "nickname": [
+            "WhergBot"
+        ],
+        "oper": [
+            null,
+            "(str/None) The username to send with /OPER, default: None"
+        ],
+        "oper_password": [
+            null,
+            "(str/None) The password to use with /OPER, default: None"
+        ],
+        "permissions.denied": [
+            "You do not have permission to access this command",
+            "(str) Permission deny message for plugin @reload"
+        ],
+        "plugins": [
+            [
+                "Plugins/Bacon/Bacon.py",
+                "Plugins/Exec/Exec.py",
+                "Plugins/General/General.py",
+                "Plugins/PrettyPrinter/PrettyPrinter.py"
+            ]
+        ],
+        "port": [
+            6667
+        ],
+        "prettyprinter": [
+            "pretty prints a formatted IRC message to the controlling terminal",
+            null
+        ],
+        "realname": [
+            "WhergBot 3.0 [Ferus]"
+        ],
+        "reload.allowed": [
+            [
+                "Ferus!anonymous@the.interwebs"
+            ],
+            "(list) Holds a list of full IRC hostmasks (nick!ident@host) of people who are allowed to use the @reload command"
+        ],
+        "reload.wait": [
+            5,
+            "(int) The number of seconds to wait when being reloaded"
+        ],
+        "server_password": [
+            null,
+            "(str/None) The password to send with /PASS, default: None"
+        ],
+        "ssl": [
+            false
+        ]
     }
 }
-

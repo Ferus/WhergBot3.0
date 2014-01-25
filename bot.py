@@ -13,7 +13,7 @@ import time
 import queue
 import threading
 
-import blackbox
+from blackbox import blackbox
 import json
 
 logging.basicConfig(filename="bot.log", filemode='a', level=logging.INFO, \
@@ -39,56 +39,61 @@ class PluginError(Exception):
 
 
 class BotConfig(object):
-	#TODO finish documenting
-	#TODO possibly add each of these to the bot itself, to act as a help of sorts
-	# maybe prepend the actual settings with "help."
-	# ie: the setting `help.enabled' would be set to '(bool) True if this connection is to be started'
-	"""Returns an object with config settings
-	Settings:
-
-	enabled (bool)
-		True if this connection is to be started
-	nickname (str)
-		IRC Nickname
-	realname (str)
-		IRC Realname
-	ident (str)
-		IRC Ident
-	host (str)
-		Address of the IRC server
-	port (int)
-		Port to connect to
-	server_password (str/None)
-		The password to send with /PASS, default None
-	ssl (bool)
-		True if using SSL to connect
-	oper (str/None)
-		If not none, the username to send with /OPER, default None
-	oper_password (str/None)
-		The password to use with /OPER, default None
-	channels (list)
-		A list of channels to join to after connecting
+	"""Returns an object with config and help settings.
+	When setting an option, you can specify a _help string
 	"""
 
 	def __init__(self, name, options):
 		self._name = name
-		self._options = options
+		self.__options = options
 
-	def set(self, option, value):
+	def __contains__(self, name):
+		return True if name in self.__options else False
+
+	def __len__(self):
+		return len(self.__options)
+
+	def __getitem__(self, name):
+		if self.__contains__(name):
+			return self.__options[name]
+		raise KeyError("That option does not exist!")
+
+	def __iter__(self):
+		return iter(self.__options.items())
+
+		# insert defaults safely
+		self.set_safe("enabled", False, _help="(bool) True if this connection is to be started")
+		self.set_safe("nickname", "WhergBot", _help="(str) IRC Nickname to use")
+		self.set_safe("realname", "WhergBot [3.0] Ferus", _help="(str) IRC Realname to use")
+		self.set_safe("ident", "Wherg", _help="(str) IRC Ident to use")
+		self.set_safe("host", "irc.datnode.net", _help="(str) Address of the IRC server to connect to")
+		self.set_safe("port", 6667, _help="(int) Port of the IRC server to connect to")
+		self.set_safe("server_password", None, _help="(str/None) The password to send with /PASS, default: None")
+		self.set_safe("ssl", False, _help="(bool) True if using SSL to connect")
+		self.set_safe("oper", None, _help="(str/None) The username to send with /OPER, default: None")
+		self.set_safe("oper_password", None, _help="(str/None) The password to use with /OPER, default: None")
+		self.set_safe("reload.wait", 5, _help="(int) The number of seconds to wait when being reloaded")
+
+	def set(self, option, value, _help=None):
 		"""Sets option to value."""
-		self._options[option] = value
+		self.__options[option] = [value, _help]
 		logger.info("[Bot {0}]: Setting '{1}' changed to value '{2}'".format(self._name, option, value))
 
-	def set_safe(self, option, value):
+	def set_safe(self, option, value, _help=None):
 		"""If the option is already set, return false, else set the option and return true"""
 		if (self.get(option) == None):
-			self.set(option, value)
+			self.set(option, value, _help)
 			return True
 		return False
 
 	def get(self, option, default=None):
 		"""Returns the value for option given"""
-		return self._options.get(option, default)
+		option = self.__options.get(option, default)
+		return option[0] if option != None else None
+
+	def get_help(self, option):
+		"""Returns the help string for given option, or None if null or it doesnt exist"""
+		return self.__options.get(option, None)
 
 	def save(self):
 		"""Writes changes to the config file"""
@@ -97,7 +102,7 @@ class BotConfig(object):
 			config = json.load(_config)
 		logger.info("[Bot {0}]: Loaded old config.".format(self._name))
 
-		for key, value in self._options.items():
+		for key, value in self.__options.items():
 			config[self._name][key] = value
 		logger.info("[Bot {0}]: Copying new values.".format(self._name))
 
@@ -110,7 +115,7 @@ class Bot(object):
 	"""Bot object"""
 	def __init__(self, name, config):
 		self.name = name
-		self.config = config # we can add more as we're running, plugins subconfig?
+		self.config = config
 		self.plugins = PluginManager(self)
 		self.onLoad = [] # list of functions to call after connecting to an IRC server.
 		self.running = False
@@ -137,9 +142,9 @@ class Bot(object):
 			host = self.config.get("host")
 			port = self.config.get("port")
 			self.ircsock.connect(host, port)
-			logger.info("[Bot {0}] Initializing connection.".format(self.name))
+			logger.info("[Bot {0}]: Initializing connection.".format(self.name))
 		except Exception as e:
-			logger.exception("[Bot {0}] Error connecting to server, waiting 15 seconds.".format(self.name))
+			logger.exception("[Bot {0}]: Error connecting to server, waiting 15 seconds.".format(self.name))
 			time.sleep(15)
 			self.run()
 
@@ -147,20 +152,20 @@ class Bot(object):
 
 		nick = self.config.get("nickname")
 		self.ircsock.nickname(nick)
-		logger.info("[Bot {0}] Sending nickname.".format(self.name))
+		logger.info("[Bot {0}]: Sending nickname.".format(self.name))
 
 		self.parser.start()
 
 		ident = self.config.get("ident")
 		real = self.config.get("realname")
 		self.ircsock.username(ident, real)
-		logger.info("[Bot {0}] Sending Ident and Realname".format(self.name))
+		logger.info("[Bot {0}]: Sending Ident and Realname".format(self.name))
 
 		while len(self.onLoad) > 0:
 			try:
 				self.onLoad.pop(0)()
 			except Exception as e:
-				logger.error("[Bot {0}] Error occured in an onLoad() function:".format(self.name))
+				logger.error("[Bot {0}]: Error occured in an onLoad() function:".format(self.name))
 
 	def quit(self, message="I am going to sleep~", reload=False):
 		"""Quits the connection and cleans up, saves bot config."""
@@ -175,9 +180,9 @@ class Bot(object):
 
 	def reload(self):
 		"""Reload a specific bot, this kills the current connection and restarts it"""
-		self.quit(message="I am being reloaded, brb in 5 seconds!", reload=True)
+		self.quit(message="I am being reloaded, brb in {0} seconds!".format(self.config.get('reload.wait', 5)), reload=True)
 		self.onLoad = []
-		time.sleep(5) # TODO Make this a config setting
+		time.sleep(self.config.get('reload.wait', 5))
 		self.init()
 		self.run()
 
@@ -201,9 +206,12 @@ class Parser(blackbox.parser.Parser):
 		"""Starts the parser"""
 		def helper():
 			"""Helper function to run in a thread, gets new messages from IRC"""
-			while self.bot.running and self.bot.ircsock.isConnected():
-				message = self.bot.ircsock.recv()
-				self.put(message)
+			try:
+				while self.bot.running and self.bot.ircsock.isConnected():
+					message = self.bot.ircsock.recv()
+					self.put(message)
+			except (blackbox.IRCError()) as e:
+				logger.exception("[Bot {0}]: Connection Error:".format(self.bot.name))
 		_in = threading.Thread(target=helper)
 		_in.daemon = True
 		_in.start()
@@ -221,14 +229,8 @@ class Parser(blackbox.parser.Parser):
 
 				def sender():
 					"""Helper function to handle sending plugins the message"""
-					# Unfuck text so plugins don't have to do it themselves
-					if len(message.params) == 2:
-						message.params.append(message.params.pop(1).split(" "))
 					for plugin in plugins:
 						plugin[0].call(message)
-					# Refuck text. \( ._.)/
-					if len(message.params) == 2:
-						message.params.append(" ".join(message.params.pop(1)))
 				senderThread = threading.Thread(target=sender)
 				senderThread.daemon = True
 				senderThread.start()
@@ -271,7 +273,7 @@ class PluginManager(object):
 		Returns the module name
 		"""
 		mname = os.path.splitext(os.path.split(path)[-1])[0]
-		logger.info("[Bot {0}] Attempting to load plugin {1}".format(self.bot.name, mname))
+		logger.info("[Bot {0}]: Attempting to load plugin {1}".format(self.bot.name, mname))
 		module = imp.load_source(mname, path)
 
 		if not hasattr(module, "Plugin"):
@@ -296,7 +298,7 @@ class PluginManager(object):
 
 		self.__plugins[instance.name] = [instance, instance.priority, path]
 
-		logger.info("[Bot {0}] Loaded plugin {1}".format(self.bot.name, instance.name))
+		logger.info("[Bot {0}]: Loaded plugin {1}".format(self.bot.name, instance.name))
 		return instance.name
 
 	def load_glob(self, paths):
@@ -308,7 +310,7 @@ class PluginManager(object):
 					try:
 						plugins.append(self.load(path))
 					except PluginError as e:
-						logger.exception("[Bot {0}] Error loading plugin at path '{1}'".format(self.bot.name, path))
+						logger.exception("[Bot {0}]: Error loading plugin at path '{1}'".format(self.bot.name, path))
 		return plugins
 
 	def unload(self, plugin):
@@ -317,7 +319,7 @@ class PluginManager(object):
 			return False
 		self.__plugins[plugin][0].finish()
 		del self.__plugins[plugin]
-		logger.info("[Bot {0}] Unloaded plugin {1}".format(self.bot.name, plugin))
+		logger.info("[Bot {0}]: Unloaded plugin {1}".format(self.bot.name, plugin))
 
 	def reload(self, plugin):
 		"""Unloads, and reloads a plugin by name"""
@@ -358,5 +360,3 @@ if __name__ == '__main__':
 			bot.quit()
 	finally:
 		sys.exit()
-
-

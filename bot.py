@@ -47,6 +47,19 @@ class BotConfig(object):
 		self._name = name
 		self.__options = options
 
+		# insert defaults safely
+		self.set_safe("enabled", False, _help="(bool) True if this connection is to be started")
+		self.set_safe("nickname", "WhergBot", _help="(str) IRC Nickname to use")
+		self.set_safe("realname", "WhergBot [3.0] Ferus", _help="(str) IRC Realname to use")
+		self.set_safe("ident", "Wherg", _help="(str) IRC Ident to use")
+		self.set_safe("host", "irc.datnode.net", _help="(str) Address of the IRC server to connect to")
+		self.set_safe("port", 6667, _help="(int) Port of the IRC server to connect to")
+		self.set_safe("server_password", None, _help="(str/None) The password to send with /PASS, default: None")
+		self.set_safe("ssl", False, _help="(bool) True if using SSL to connect")
+		self.set_safe("oper", None, _help="(str/None) The username to send with /OPER, default: None")
+		self.set_safe("oper_password", None, _help="(str/None) The password to use with /OPER, default: None")
+		self.set_safe("reload.wait", 5, _help="(int) The number of seconds to wait when being reloaded")
+
 	def __contains__(self, name):
 		return True if name in self.__options else False
 
@@ -60,19 +73,6 @@ class BotConfig(object):
 
 	def __iter__(self):
 		return iter(self.__options.items())
-
-		# insert defaults safely
-		self.set_safe("enabled", False, _help="(bool) True if this connection is to be started")
-		self.set_safe("nickname", "WhergBot", _help="(str) IRC Nickname to use")
-		self.set_safe("realname", "WhergBot [3.0] Ferus", _help="(str) IRC Realname to use")
-		self.set_safe("ident", "Wherg", _help="(str) IRC Ident to use")
-		self.set_safe("host", "irc.datnode.net", _help="(str) Address of the IRC server to connect to")
-		self.set_safe("port", 6667, _help="(int) Port of the IRC server to connect to")
-		self.set_safe("server_password", None, _help="(str/None) The password to send with /PASS, default: None")
-		self.set_safe("ssl", False, _help="(bool) True if using SSL to connect")
-		self.set_safe("oper", None, _help="(str/None) The username to send with /OPER, default: None")
-		self.set_safe("oper_password", None, _help="(str/None) The password to use with /OPER, default: None")
-		self.set_safe("reload.wait", 5, _help="(int) The number of seconds to wait when being reloaded")
 
 	def set(self, option, value, _help=None):
 		"""Sets option to value."""

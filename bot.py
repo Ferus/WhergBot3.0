@@ -93,7 +93,8 @@ class BotConfig(object):
 
 	def get_help(self, option):
 		"""Returns the help string for given option, or None if null or it doesnt exist"""
-		return self.__options.get(option, None)
+		__help = self.__options.get(option, None)
+		return __help[1] if __help != None else "No help available."
 
 	def save(self):
 		"""Writes changes to the config file"""

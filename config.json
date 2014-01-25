@@ -7,10 +7,12 @@
         "channels": [
             [
                 "#hacking"
-            ]
+            ],
+            "(list) A list of channels to /JOIN on connect"
         ],
         "enabled": [
-            false
+            false,
+            "(bool) True if this connection is to be started"
         ],
         "exec": [
             null,
@@ -27,13 +29,16 @@
             "Supplies plugin @reload, @join, @part, and @quit"
         ],
         "host": [
-            "irc.datnode.net"
+            "irc.datnode.net",
+            "(str) Address of the IRC server to connect to"
         ],
         "ident": [
-            "Wherg"
+            "Wherg",
+            "(str) IRC Ident to use"
         ],
         "nickname": [
-            "WhergBot2"
+            "WhergBot",
+            "(str) IRC Nickname to use"
         ],
         "oper": [
             null,
@@ -56,14 +61,16 @@
             ]
         ],
         "port": [
-            6667
+            6667,
+            "(int) Port of the IRC server to connect to"
         ],
         "prettyprinter": [
             null,
             "pretty prints a formatted IRC message to the controlling terminal"
         ],
         "realname": [
-            "WhergBot 3.0 [Ferus]"
+            "WhergBot [3.0] Ferus",
+            "(str) IRC Realname to use"
         ],
         "reload.allowed": [
             [
@@ -80,7 +87,8 @@
             "(str/None) The password to send with /PASS, default: None"
         ],
         "ssl": [
-            false
+            false,
+            "(bool) True if using SSL to connect"
         ]
     }
 }

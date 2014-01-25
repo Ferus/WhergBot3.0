@@ -33,7 +33,7 @@
             "Wherg"
         ],
         "nickname": [
-            "WhergBot"
+            "WhergBot2"
         ],
         "oper": [
             null,
@@ -59,8 +59,8 @@
             6667
         ],
         "prettyprinter": [
-            "pretty prints a formatted IRC message to the controlling terminal",
-            null
+            null,
+            "pretty prints a formatted IRC message to the controlling terminal"
         ],
         "realname": [
             "WhergBot 3.0 [Ferus]"

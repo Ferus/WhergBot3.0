@@ -1,0 +1,3 @@
+[submodule "blackbox"]
+	path = blackbox
+	url = git@github.com:Ferus/blackbox_IRC-macros.git

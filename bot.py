@@ -119,7 +119,7 @@ class Bot(object):
 		self.name = name
 		self.config = config
 		self.plugins = PluginManager(self)
-		self.onLoad = [] # list of functions to call after connecting to an IRC server.
+		self.on_load = [] # list of functions to call after connecting to an IRC server.
 		self.running = False
 		self.parser = Parser(self)
 
@@ -163,11 +163,17 @@ class Bot(object):
 		self.ircsock.username(ident, real)
 		logger.info("[Bot {0}]: Sending Ident and Realname".format(self.name))
 
-		while len(self.onLoad) > 0:
+		while len(self.on_load) > 0:
 			try:
-				self.onLoad.pop(0)()
+				func = self.on_load.pop(0)
+				func()
 			except Exception as e:
-				logger.error("[Bot {0}]: Error occured in an onLoad() function:".format(self.name))
+				logger.error("[Bot {0}]: Error occured in an on_load() function: `{1}` from" \
+					" plugin `{2}`".format(self.name, func.__name__, func.__module__))
+
+	def on_connect(self, callback):
+		"""Register a callback to be ran when connected"""
+		self.on_load.append(callback)
 
 	def quit(self, message="I am going to sleep~", reload=False):
 		"""Quits the connection and cleans up, saves bot config."""

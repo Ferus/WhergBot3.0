@@ -28,6 +28,10 @@
             null,
             "Supplies plugin @reload, @join, @part, and @quit"
         ],
+        "help": [
+            null,
+            "Provides @help for all plugins and config settings"
+        ],
         "host": [
             "irc.datnode.net",
             "(str) Address of the IRC server to connect to"
@@ -40,11 +44,19 @@
             "WhergBot",
             "(str) IRC Nickname to use"
         ],
+        "nickserv.password": [
+            null,
+            "(str/None) The password to authenticate to NickServ with"
+        ],
         "oper": [
             null,
             "(str/None) The username to send with /OPER, default: None"
         ],
-        "oper_password": [
+        "oper.modes": [
+            null,
+            "(str/None) Extra modes to set when /OPER'ing"
+        ],
+        "oper.password": [
             null,
             "(str/None) The password to use with /OPER, default: None"
         ],
@@ -57,7 +69,9 @@
                 "Plugins/Bacon/Bacon.py",
                 "Plugins/Exec/Exec.py",
                 "Plugins/General/General.py",
-                "Plugins/PrettyPrinter/PrettyPrinter.py"
+                "Plugins/Help/Help.py",
+                "Plugins/PrettyPrinter/PrettyPrinter.py",
+                "Plugins/Services/Services.py"
             ]
         ],
         "port": [

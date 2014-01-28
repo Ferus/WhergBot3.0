@@ -80,7 +80,7 @@ class BotConfig(object):
 
 	def set_safe(self, option, value, _help=None):
 		"""If the option is already set, return false, else set the option and return true"""
-		if (self.get(option) == None):
+		if not self.__contains__(option):
 			self.set(option, value, _help)
 			return True
 		return False

@@ -57,8 +57,6 @@ class BotConfig(object):
 		self.set_safe("channels", ["#hacking"], _help="(list) A list of channels to /JOIN on connect")
 		self.set_safe("server_password", None, _help="(str/None) The password to send with /PASS, default: None")
 		self.set_safe("ssl", False, _help="(bool) True if using SSL to connect")
-		self.set_safe("oper", None, _help="(str/None) The username to send with /OPER, default: None")
-		self.set_safe("oper_password", None, _help="(str/None) The password to use with /OPER, default: None")
 		self.set_safe("reload.wait", 5, _help="(int) The number of seconds to wait when being reloaded")
 
 	def __contains__(self, name):

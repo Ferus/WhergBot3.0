@@ -27,7 +27,7 @@ class Plugin(object):
 
 		if message.params[1] == "@help":
 			# incase of PM's
-			target = message.params[0] if message.params[0] != self.bot.config.get('nickname') else message.origin()[1:]
+			target = message.params[0] if message.params[0] != self.bot.ircsock.getnick() else message.origin()[1:]
 			term = message.params[2]
 
 			if term in self.bot.config:

@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 
-class Plugin(object):
+from plugin import BasicPlugin
+
+class Plugin(BasicPlugin):
 	"""Bacon Plugin"""
 	def __init__(self, bot):
 		self.bot = bot
 		self.name = "bacon"
 		self.priority = 0
+		self.load_priority = 10
 
 	def finish(self):
 		pass
@@ -17,6 +20,9 @@ class Plugin(object):
 	def call(self, message):
 		if message.command != "PRIVMSG":
 			return None
-		if message.params[1] == "@bacon":
+
+		origin = message.params[0] if message.params[0] != self.bot.ircsock.getnick() else message.origin()[1:]
+
+		if message.params[1] == self.bot.config.get("command_trigger")+"bacon":
 			target = ' '.join(message.params[2:]) if len(message.params) >= 3 else "Ferus"
-			self.bot.ircsock.action(message.params[0], "cooks up some fancy bacon for {0}".format(target))
+			self.bot.ircsock.action(origin, "cooks up some fancy bacon for {0}".format(target))

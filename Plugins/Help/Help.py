@@ -8,11 +8,14 @@ Provides @help for all plugins and config settings
 
 import re
 
-class Plugin(object):
+from plugin import BasicPlugin
+
+class Plugin(BasicPlugin):
 	def __init__(self, bot):
 		self.bot = bot
 		self.name = "help"
 		self.priority = 50
+		self.load_priority = 10
 
 	def finish(self):
 		pass
@@ -25,9 +28,13 @@ class Plugin(object):
 		if message.command != "PRIVMSG":
 			return None
 
-		if message.params[1] == "@help":
+		if message.params[1] == self.bot.config.get("command_trigger")+"help":
 			# incase of PM's
 			target = message.params[0] if message.params[0] != self.bot.ircsock.getnick() else message.origin()[1:]
+
+			if not len(message.params) > 2:
+				self.bot.ircsock.say(target, "`@help <target>` where target may be a plugin name or a config setting")
+				return None
 			term = message.params[2]
 
 			if term in self.bot.config:

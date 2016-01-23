@@ -111,6 +111,7 @@ class Bot(object):
 	def __init__(self, name, config):
 		self.name = name
 		self.config = config
+		self.time = 0
 		self.on_load = [] # list of functions to call after connecting to an IRC server.
 		self.running = False
 		self.is_oper = False
@@ -148,6 +149,7 @@ class Bot(object):
 			time.sleep(15)
 			self.run()
 
+		self.time = time.time()
 		self.running = True
 
 		nick = self.config.get("nickname")

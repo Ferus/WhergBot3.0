@@ -4,7 +4,9 @@ import random
 import logging
 logger = logging.getLogger("Fapget")
 
-class Plugin(object):
+from plugin import BasicPlugin
+
+class Plugin(BasicPlugin):
 	"""Fapget Plugin"""
 	def __init__(self, bot):
 		self.bot = bot

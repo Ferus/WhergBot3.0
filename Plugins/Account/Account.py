@@ -4,12 +4,14 @@ import hashlib
 import logging
 logger = logging.getLogger("Account")
 
+from plugin import BasicPlugin
+
 def create_hash(string):
 	h = hashlib.sha512()
 	h.update(string.encode("utf-8"))
 	return h.hexdigest()
 
-class Plugin(object):
+class Plugin(BasicPlugin):
 	"""
 	User Account Plugin
 	Handles authentication and login to the bot

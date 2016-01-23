@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import time
+
 from plugin import BasicPlugin
 
 class Plugin(BasicPlugin):
@@ -23,6 +25,11 @@ class Plugin(BasicPlugin):
 		self.bot.config.set_safe("permissions.reload", self.bot.config.get('permissions.owner', [])
 			, _help="(list) Holds a list of full IRC hostmasks (nick!ident@host) " \
 			"of people who are allowed to use the @reload command")
+
+		self.bot.config.set_safe("channels.autorejoin.on_kick", False, _help="(bool) Whether to autorejoin a channel when kicked")
+		self.bot.config.set_safe("channels.autorejoin.delay", 15, _help="(int) How long to wait in seconds before rejoining, 0 to disable")
+		self.bot.config.set_safe("channels.autorejoin.harass", False, _help="(bool) Whether to rejoin and kick the kicker (Requires Oper)")
+		self.bot.config.set_safe("channels.autorejoin.harass_message", "Wow, that's pretty fucking rude mate!", _help="(str) Kick message for autorejoin")
 		return True
 
 	def call(self, message):
@@ -64,6 +71,20 @@ class Plugin(BasicPlugin):
 
 			elif message.params[1] == self.bot.config.get("command_trigger")+"quit":
 				self.bot.quit(" ".join(message.params[2:])) if len(message.params) >= 3 else self.bot.quit()
+
+		if message.command == "KICK":
+			#['#h', 'WhergBotv3', 'Ferus']
+			if self.bot.config.get("channels.autorejoin.on_kick"):
+				delay = self.bot.config.get("channels.autorejoin.delay")
+				if delay != 0:
+					time.sleep(delay)
+				# TODO add support for keys
+				# Get it from self.bot.channels.get_channel().key
+				self.bot.ircsock.join(message.params[0])
+
+				if self.bot.config.get("channels.autorejoin.harass") and self.bot.is_oper:
+					self.bot.ircsock.kick(message.params[0], message.origin()[1:], self.bot.config.get("channels.autorejoin.harass_message"))
+
 
 # TODO
 # add support for keys in @join and @part

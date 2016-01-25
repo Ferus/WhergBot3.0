@@ -18,7 +18,7 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe(self.name, None, "pretty prints a formatted IRC message to the controlling terminal")
+		self.bot.config.set_safe("plugins."+self.name, None, "pretty prints a formatted IRC message to the controlling terminal")
 		return True
 
 	def call(self, message):

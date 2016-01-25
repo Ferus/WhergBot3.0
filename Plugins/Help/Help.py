@@ -21,7 +21,7 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe(self.name, None, _help="Provides @help for all plugins and config settings")
+		self.bot.config.set_safe("plugins."+self.name, None, _help="Provides @help for all plugins and config settings")
 		return True
 
 	def call(self, message):
@@ -36,6 +36,8 @@ class Plugin(BasicPlugin):
 				self.bot.ircsock.say(target, "`@help <target>` where target may be a plugin name or a config setting")
 				return None
 			term = message.params[2]
+
+			# TODO Fuzzy search (*) in term
 
 			if term in self.bot.config:
 				_help = self.bot.config.get_help(term)

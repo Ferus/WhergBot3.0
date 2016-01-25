@@ -38,7 +38,7 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe(self.name, None, "Ask the magic 8ball a question and recieve an answer!")
+		self.bot.config.set_safe("plugins."+self.name, None, "Ask the magic 8ball a question and recieve an answer!")
 		return True
 
 	def call(self, message):

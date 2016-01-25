@@ -17,7 +17,7 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe(self.name, None, "Picks a random item from a comma delimited list")
+		self.bot.config.set_safe("plugins."+self.name, None, "Polls insultgenerator.org for a random insult.")
 		return True
 
 	def call(self, message):
@@ -25,7 +25,7 @@ class Plugin(BasicPlugin):
 			return None
 		origin = message.params[0] if message.params[0] != self.bot.ircsock.getnick() else message.origin()[1:]
 		if message.params[1] == self.bot.config.get("command_trigger")+"insult" and len(message.params) > 2:
-			self.bot.ircsock.say(origin, "{0}: {1}".format(message.params[2], self.generateInsult()))
+			self.bot.ircsock.say(origin, "{0}: {1}".format(" ".join(message.params[2:]), self.generateInsult()))
 
 	def generateInsult(self):
 			html = requests.get("http://insultgenerator.org/")

@@ -37,8 +37,11 @@ class Plugin(BasicPlugin):
 			return False
 
 	def hook(self):
-		self.bot.config.set_safe(self.name, None, "Provides a random list of things for people to @fapget to")
-		self.bot.config.set_safe("fap.allowed", ['Ferus!anonymous@the.interwebs'], _help="(list) A list of complete IRC hosts that are allowed to add faps")
+		self.bot.config.set_safe("plugins."+self.name, None, "Provides a random list of things for people to @fapget to")
+		self.bot.config.set_safe("plugins."+self.name+".fap_allowed"
+			,['Ferus!anonymous@the.interwebs']
+			,_help="(list) A list of complete IRC hosts that are allowed to add faps"
+		)
 		return self.load_faps()
 
 	def call(self, message):
@@ -53,7 +56,7 @@ class Plugin(BasicPlugin):
 			return None
 
 		elif message.params[1] == self.bot.config.get("command_trigger")+"fapget.add":
-			if message.prefix[1:] in self.bot.config.get("fap.allowed"):
+			if message.prefix[1:] in self.bot.config.get("plugins."+self.name+".fap_allowed"):
 				if len(message.params) >= 3:
 					fap = " ".join(message.params[2:])
 					if self.add_fap(fap):

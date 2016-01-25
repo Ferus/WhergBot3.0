@@ -39,9 +39,9 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe(self.name, None, _help="Handles user authentication to the bot")
-		self.bot.config.set_safe("salt", "superSecretSaltString", _help="(str) Salt to use when salting user passwords")
-		self.bot.config.set_safe(self.name+".warn_user_on_autherror", True, _help="(bool) /NOTICE user on AuthorityError?")
+		self.bot.config.set_safe("plugins."+self.name, None, _help="Handles user authentication to the bot")
+		self.bot.config.set_safe("plugins."+self.name+".salt", "superSecretSaltString", _help="(str) Salt to use when salting user passwords")
+		self.bot.config.set_safe("plugins."+self.name+".warn_user_on_autherror", True, _help="(bool) /NOTICE user on AuthorityError?")
 		return True
 
 	def call(self, message):
@@ -62,7 +62,7 @@ class Plugin(BasicPlugin):
 						self.bot.ircsock.say(origin, "[Account] You are already logged in!")
 						return None
 					if user.account.auth.get("username") != "" and user.account.auth.get("password") != "":
-						passwd = create_hash(self.bot.config.get("salt")+message.params[4])
+						passwd = create_hash(self.bot.config.get("plugins."+self.name+".salt")+message.params[4])
 						if user.account.auth.get("username") == message.params[3] and \
 							user.account.auth.get("password") == passwd:
 							user.account.set_authenticated()
@@ -88,7 +88,7 @@ class Plugin(BasicPlugin):
 					user = self.bot.users.get_user(target)
 					# Check for existing login info
 					if user.account.auth.get("username") == "" and user.account.auth.get("password") == "":
-						passwd = create_hash(self.bot.config.get("salt")+message.params[4])
+						passwd = create_hash(self.bot.config.get("plugins."+self.name+".salt")+message.params[4])
 						user.account.auth["username"] = message.params[3]
 						user.account.auth["password"] = passwd
 						#and the host too!

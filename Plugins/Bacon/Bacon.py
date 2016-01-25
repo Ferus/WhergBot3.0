@@ -14,7 +14,7 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe(self.name, None, "To cook bacon for someone, use @bacon")
+		self.bot.config.set_safe("plugins."+self.name, None, "To cook bacon for someone, use @bacon")
 		return True
 
 	def call(self, message):

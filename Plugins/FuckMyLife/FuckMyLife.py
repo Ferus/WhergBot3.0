@@ -18,7 +18,7 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe(self.name, None, "Polls random FML's from FMyLife.com")
+		self.bot.config.set_safe("plugins."+self.name, None, "Polls random FML's from FMyLife.com")
 		self.fmlGenerator = self.fml()
 		return True
 

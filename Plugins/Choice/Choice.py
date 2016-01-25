@@ -16,7 +16,7 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe(self.name, None, "Picks a random item from a comma delimited list")
+		self.bot.config.set_safe("plugins."+self.name, None, "Picks a random item from a comma delimited list")
 		return True
 
 	def call(self, message):

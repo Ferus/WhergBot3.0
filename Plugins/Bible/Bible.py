@@ -13,13 +13,13 @@ class Plugin(BasicPlugin):
 
 
 	def finish(self):
-		pass
+		self.connection.close()
 
 	def hook(self):
-		self.bot.config.set_safe(self.name, None, "Provides the King James v3 Bible")
-		self.bot.config.set_safe("plugins.bible.database", "Plugins/Bible/King_James_Bible.sql3", "(str) Path to the sqlite3 King James Bible file")
+		self.bot.config.set_safe("plugins."+self.name, None, "Provides the King James v3 Bible")
+		self.bot.config.set_safe("plugins."+self.name+".database", "Plugins/Bible/King_James_Bible.sql3", "(str) Path to the sqlite3 King James Bible file")
 
-		self.connection = sqlite3.connect(self.bot.config.get("plugins.bible.database"), check_same_thread = False)
+		self.connection = sqlite3.connect(self.bot.config.get("plugins."+self.name+".database"), check_same_thread = False)
 		self.valid_books = []
 		cursor = self.connection.cursor()
 		books = cursor.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()

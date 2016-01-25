@@ -1,3 +1,9 @@
 [submodule "blackbox"]
 	path = blackbox
 	url = git@github.com:Ferus/blackbox_IRC-macros.git
+[submodule "Plugins/CleverBot/cleverbot"]
+	path = Plugins/CleverBot/cleverbot
+	url = https://github.com/superboum/cleverbot.git
+[submodule "cleverbot"]
+	path = cleverbot
+	url = https://github.com/superboum/cleverbot.git

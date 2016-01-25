@@ -167,6 +167,11 @@ class Parser(blackbox.parser.Parser):
 						user._first_whois = True
 						self.bot.ircsock.whois(name)
 
+				if message.command == "MODE":
+					# TODO parse modes
+#					print(message.params)
+					pass
+
 				### START /WHOIS BLOCK
 				#:apistia.datnode.net 311 WhergBot2 Ferus anonymous the.interwebs * h
 				#311: "<nick> <user> <host> * :<real name>"

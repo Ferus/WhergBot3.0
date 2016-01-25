@@ -44,8 +44,6 @@ class Channels(object):
 
 
 class Channel(object):
-	# TODO
-	# topic, topic_created_*
 	"""Holds all Channel level functions/properties
 	Properties defined here:
 		name                - The channels name

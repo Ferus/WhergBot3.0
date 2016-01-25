@@ -40,7 +40,8 @@ class Plugin(BasicPlugin):
 
 	def hook(self):
 		self.bot.config.set_safe(self.name, None, _help="Handles user authentication to the bot")
-		self.bot.config.set_safe("salt", "superSecretSaltString", _help="Salt to use when salting user passwords")
+		self.bot.config.set_safe("salt", "superSecretSaltString", _help="(str) Salt to use when salting user passwords")
+		self.bot.config.set_safe(self.name+".warn_user_on_autherror", True, _help="(bool) /NOTICE user on AuthorityError?")
 		return True
 
 	def call(self, message):

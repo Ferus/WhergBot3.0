@@ -10,6 +10,7 @@ import logging
 logger = logging.getLogger("Exec")
 
 from plugin import BasicPlugin
+from account import AuthorityError
 
 class Plugin(BasicPlugin):
 	"""Exec Plugin"""
@@ -51,4 +52,4 @@ class Plugin(BasicPlugin):
 				except Exception as e:
 					self.bot.ircsock.say(origin, repr(e))
 			else:
-				self.bot.ircsock.notice(message.origin()[1:], "You are not authorized to use this command!")
+				raise AuthorityError(self.bot, message.origin()[1:], "You are not authorized to use this command!")

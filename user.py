@@ -119,7 +119,7 @@ class User(object):
 
 	def get_channels(self):
 		"""Returns a list of all the names of channels"""
-		return self.channels.keys()
+		return list(self.channels.keys())
 
 	def get_oplevel(self, channel):
 		"""Returns a users oplevel for the given channel by name"""

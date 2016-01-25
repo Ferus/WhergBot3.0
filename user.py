@@ -1,5 +1,7 @@
 import sqlite3
 
+from account import UserAccount
+
 class Users(object):
 	"""Container for user objects"""
 	def __init__(self, bot):
@@ -34,10 +36,16 @@ class Users(object):
 			raise KeyError("That user doesnt exist.")
 		del self.__users[user.nick.lower()]
 
-	def get_user(self, name):
+	def get_user(self, name, create=False, create_account=True):
 		"""Takes a users name"""
 		if not self.__contains__(name.lower()):
-			raise KeyError("That user doesnt exist.")
+			if create:
+				newuser = User(name.lower())
+				if create_account:
+					newuser.account = UserAccount(self.bot, newuser)
+				self.add_user(newuser)
+			else:
+				raise KeyError("That user doesnt exist.")
 		return self.__users[name.lower()]
 
 class User(object):

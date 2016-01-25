@@ -17,9 +17,24 @@ config.permissions.$NICK = UserAccount().auth
 
 """
 
+import time
+
 class AuthorityError(Exception):
 	"""Authority Error"""
-	pass
+	def __init__(self, bot, name, message):
+		super(AuthorityError, self).__init__()
+		self.bot = bot
+		self.user = self.bot.users.get_user(name)
+		self.message = message
+		self.time = time.localtime()
+
+	def __repr__(self):
+		return "AuthorityError(bot={0},user={1},message={2},time={3})".format( \
+			self.bot.name, self.user.nick, self.message, self.time)
+
+	def __str__(self):
+		return "[Bot: {0}] AuthorityError - User: {1}, Message: {2}, Time: {3}".format( \
+			self.bot.name, self.user.nick, self.message, time.strftime("%m/%d/%Y - %H:%M:%S", self.time))
 
 class UserAccount(object):
 	def __init__(self, bot, user):

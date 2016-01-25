@@ -32,11 +32,16 @@ class Channels(object):
 			raise KeyError("That channel does not exist.")
 		del self.__channels[channel.name]
 
-	def get_channel(self, channel):
+	def get_channel(self, channel, create=False):
 		"""Takes a channels name"""
 		if not self.__contains__(channel):
-			raise KeyError("That channel does not exist.")
+			if create:
+				newchan = Channel(channel)
+				self.add_channel(newchan)
+			else:
+				raise KeyError("That channel does not exist.")
 		return self.__channels[channel]
+
 
 class Channel(object):
 	# TODO

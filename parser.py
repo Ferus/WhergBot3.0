@@ -13,7 +13,7 @@ from account import UserAccount, AuthorityError
 
 logger = logging.getLogger('Parser')
 
-#pylint: disable=W0212
+#pylint: disable=W0212,R0914
 
 class Parser(blackbox.parser.Parser):
 	"""Handles all IRC messages"""
@@ -60,13 +60,7 @@ class Parser(blackbox.parser.Parser):
 				# params[6] H == avail; G == away; * == oper, r == registered nickserv
 				if message.command == "352":
 					nick = message.params[5]
-
-					try:
-						user = self.bot.users.get_user(nick)
-					except Exception as e:
-						user = User(nick)
-						self.bot.users.add_user(user)
-
+					user = self.bot.users.get_user(nick, create=True)
 					user.ident = message.params[2]
 					user.host = message.params[3]
 					user.server = message.params[4]
@@ -95,30 +89,17 @@ class Parser(blackbox.parser.Parser):
 							name = name[0]
 							oplevel = None
 
-						try:
-							user = self.bot.users.get_user(name)
-						except Exception as e:
-							user = User(name)
-							user.account = UserAccount(self.bot, user)
-							self.bot.users.add_user(user)
+						user = self.bot.users.get_user(name, create=True)
 
-						try:
-							channel = self.bot.channels.get_channel(message.params[2])
-							if user.nick not in channel.get_users():
-								channel.add_user(user, oplevel)
-						except KeyError as e:
-							logger.exception("Channel does not exist yet!")
+						channel = self.bot.channels.get_channel(message.params[2], create=True)
+						if user.nick not in channel.get_users():
+							channel.add_user(user, oplevel)
 
 #				# Whois users when they are set to be re-whois'd
 #				# Default is on /JOIN
 #				if message.command in self.whois_levels:
 #					name = message.origin()[1:]
-#					try:
-#						user = self.bot.users.get_user(name)
-#					except Exception as e:
-#						user = User(name)
-#						user.account = UserAccount(self.bot, user)
-#						self.bot.users.add_user(user)
+#					user = self.bot.users.get_user(name)
 #					if user.whois_update_level == self.whois_levels[message.command]:
 #						user._first_whois = True
 #						self.bot.ircsock.whois(name)
@@ -131,22 +112,10 @@ class Parser(blackbox.parser.Parser):
 					if name == self.bot.ircsock.getnick():
 						self.bot.ircsock.who(message.params[0])
 						self.bot.ircsock.mode(message.params[0])
-
-						try:
-							channel = self.bot.channels.get_channel(message.params[0])
-						except KeyError as e:
-							channel = Channel(message.params[0])
-							self.bot.channels.add_channel(channel)
-
+						channel = self.bot.channels.get_channel(message.params[0], create=True)
 
 					else:
-						try:
-							user = self.bot.users.get_user(name)
-						except Exception as e:
-							user = User(name)
-							user.account = UserAccount(self.bot, user)
-							self.bot.users.add_user(user)
-
+						user = self.bot.users.get_user(name, create=True)
 						channel = self.bot.channels.get_channel(message.params[0])
 						if user.nick not in channel.get_users():
 							channel.add_user(user, None)
@@ -167,7 +136,23 @@ class Parser(blackbox.parser.Parser):
 						user = self.bot.users.get_user(name)
 						for channel in user.channels.values():
 							channel = channel[0]
-							channel.remove.user(name)
+							channel.remove_user(name)
+
+				if message.command == "NICK":
+					oldnick = message.origin()[1:]
+					newnick = message.params[0]
+
+					# remove the old one
+					for channel in self.bot.users.get_user(oldnick).get_channels():
+						self.bot.channels.get_channel(channel).remove_user(oldnick)
+						self.bot.channels.get_channel(channel).add_user(newnick)
+					self.bot.users.remove_user(oldnick)
+
+					user = self.bot.users.get_user(newnick, create=True)
+
+#					if oldnick != self.bot.ircsock.getnick():
+#						# Not us
+
 
 				# We want to /WHOIS new people when they first speak
 				if message.command == "PRIVMSG":
@@ -182,12 +167,8 @@ class Parser(blackbox.parser.Parser):
 				#311: "<nick> <user> <host> * :<real name>"
 				if message.command == "311":
 					#['WhergBot2', 'Ferus', 'anonymous', 'the.interwebs', '*', 'h']
-					try:
-						nick = message.params[1]
-						user = self.bot.users.get_user(nick)
-					except Exception as e:
-						user = User(nick)
-						self.bot.users.add_user(user)
+					nick = message.params[1]
+					user = self.bot.users.get_user(nick, create=True)
 					user.ident = message.params[2]
 					user.host = message.params[3]
 					user.realname = message.params[5]
@@ -195,104 +176,74 @@ class Parser(blackbox.parser.Parser):
 				#:apistia.datnode.net 307 WhergBot2 Ferus is a registered nick
 				#307: registered to nickserv
 				if message.command == "307":
-					try:
-						nick = message.params[1]
-						user = self.bot.users.get_user(nick)
-						user.authenticated = True
-					except Exception as e:
-						logger.exception("User does not exist!")
+					user = self.bot.users.get_user(nick)
+					user.authenticated = True
 
 				#:apistia.datnode.net 319 WhergBot2 Ferus ~#bots +#4chon &#hacking
 				#319: List of channels
 				if message.command == "319":
-					try:
-						nick = message.params[1]
-						user = self.bot.users.get_user(nick)
-						for channels in message.params[2].strip(" ").split(" "):
-							channel = re.split("([+%@&~]?)", channels) # TODO change this once 005 parsing (SUPPORT) is finished
-							if len(channel) == 3:
-								oplevel = channel[1]
-								channel = channel[2]
-							elif len(channel) == 1:
-								channel = channel[0]
-								oplevel = None
+					nick = message.params[1]
+					user = self.bot.users.get_user(nick)
+					for channels in message.params[2].strip(" ").split(" "):
+						channel = re.split("([+%@&~]?)", channels) # TODO change this once 005 parsing (SUPPORT) is finished
+						if len(channel) == 3:
+							oplevel = channel[1]
+							channel = channel[2]
+						elif len(channel) == 1:
+							channel = channel[0]
+							oplevel = None
 
-							try:
-								chan = self.bot.channels.get_channel(channel)
-							except KeyError as e:
-								chan = Channel(channel)
-								self.bot.channels.add_channel(chan)
-							if user.nick not in chan.get_users():
-								chan.add_user(user, oplevel)
-							if chan.name not in user.get_channels():
-								user.add_channel(chan, oplevel)
-					except Exception as e:
-						logger.exception("User does not exist!")
+						chan = self.bot.channels.get_channel(channel, create=True)
+						if user.nick not in chan.get_users():
+							chan.add_user(user, oplevel)
+						if chan.name not in user.get_channels():
+							user.add_channel(chan, oplevel)
 
 				#:apistia.datnode.net 312 WhergBot2 Ferus areskeia.datnode.net The Complacent Man
 				#312: "<nick> <server> :<server info>"
 				if message.command == "312":
-					try:
-						nick = message.params[1]
-						user = self.bot.users.get_user(nick)
-						user.server = message.params[2]
-						user.server_info = message.params[3]
-					except Exception as e:
-						logger.exception("User does not exist!")
+					nick = message.params[1]
+					user = self.bot.users.get_user(nick)
+					user.server = message.params[2]
+					user.server_info = message.params[3]
 
 				#:apistia.datnode.net 313 WhergBot2 Ferus is a Network Administrator
 				#:apistia.datnode.net 313 WhergBot2 Boris is a Network Service
 				if message.command == "313":
-					try:
-						nick = message.params[1]
-						user = self.bot.users.get_user(nick)
-						user.is_oper = True
-						if message.params[2].endswith("Service"):
-							user.authenticated = True
-					except Exception as e:
-						logger.exception("User does not exist!")
+					nick = message.params[1]
+					user = self.bot.users.get_user(nick)
+					user.is_oper = True
+					if message.params[2].endswith("Service"):
+						user.authenticated = True
 
 				#:apistia.datnode.net 335 WhergBot2 Ferus is a Bot on DatNode
 				#335: user has +B set
 				if message.command == "335":
-					try:
-						nick = message.params[1]
-						user = self.bot.users.get_user(nick)
-						user.set_umodes("B")
-						user.is_bot = True
-					except Exception as e:
-						logger.exception("User does not exist!")
+					nick = message.params[1]
+					user = self.bot.users.get_user(nick)
+					user.set_umodes("B")
+					user.is_bot = True
 
 				#:apistia.datnode.net 671 WhergBot2 Ferus is using a Secure Connection
 				#671: user is using ssl
 				if message.command == "671":
-					try:
-						nick = message.params[1]
-						user = self.bot.users.get_user(nick)
-						user.ssl = True
-					except Exception as e:
-						logger.exception("User does not exist!")
-
+					nick = message.params[1]
+					user = self.bot.users.get_user(nick)
+					user.ssl = True
 
 				#:hub.datnode.net 276 WhergBotv3 Ferus has client certificate fingerprint e486ca3a446840367787fd13c0b9da8b970892f97303975de85e5f7bb068655a
 				#276: user is using ssl certfp
 				if message.command == "276":
-					try:
-						nick = message.params[1]
-						user = self.bot.users.get_user(nick)
-						user.ssl_certfp = message.params[-1]
-					except Exception as e:
-						logger.exception("User does not exist!")
+					nick = message.params[1]
+					user = self.bot.users.get_user(nick)
+					user.ssl_certfp = message.params[-1]
 
 				#:hub.datnode.net 320 WhergBotv3 Ferus [is] [a] [l33t] [h4x0r]
 				#320: swhois
 				if message.command == "320":
-					try:
-						nick = message.params[1]
-						user = self.bot.users.get_user(nick)
-						user.swhois = " ".join(message.params[2:])
-					except Exception as e:
-						logger.exception("User does not exist!")
+					nick = message.params[1]
+					user = self.bot.users.get_user(nick)
+					user.swhois = " ".join(message.params[2:])
 
 				#:hub.datnode.net 330 WhergBotv3 Ferus Ferus is logged in as
 				#330: nickserv accounts?
@@ -304,41 +255,29 @@ class Parser(blackbox.parser.Parser):
 				#['WhergBot2', '#bots', '+ntr', '']
 				# .modes
 				if message.command == "324":
-					try:
-						channel = self.bot.channels.get_channel(message.params[1])
-						channel.set_modes(message.params[2].replace("+", ""))
-					except KeyError as e:
-						logger.exception("Channel does not exist")
+					channel = self.bot.channels.get_channel(message.params[1], create=True)
+					channel.set_modes(message.params[2].replace("+", ""))
 
 				#:aponoia.datnode.net 329 WhergBot2 #bots 1383608565
 				#['WhergBot2', '#bots', '1383608565']
 				# .created
 				if message.command == "329":
-					try:
-						channel = self.bot.channels.get_channel(message.params[1])
-						channel.created = message.params[2]
-					except KeyError as e:
-						logger.exception("Channel does not exist")
+					channel = self.bot.channels.get_channel(message.params[1], create=True)
+					channel.created = message.params[2]
 
 				#:aponoia.datnode.net 332 WhergBot2 #bots Welcome to #bots, the future home of Skynet!
 				# .topic
 				if message.command == "332":
-					try:
-						channel = self.bot.channels.get_channel(message.params[1])
-						channel.topic = " ".join(message.params[2:])
-					except KeyError as e:
-						logger.exception("Channel does not exist")
+					channel = self.bot.channels.get_channel(message.params[1], create=True)
+					channel.topic = " ".join(message.params[2:])
 
 				#:aponoia.datnode.net 333 WhergBot2 #bots horkx3 1312180625
 				# .topic_created_by
 				# .topic_created_time
 				if message.command == "333":
-					try:
-						channel = self.bot.channels.get_channel(message.params[1])
-						channel.topic_created_by = message.params[2]
-						channel.topic_created_time = message.params[3]
-					except KeyError as e:
-						logger.exception("Channel does not exist")
+					channel = self.bot.channels.get_channel(message.params[1], create=True)
+					channel.topic_created_by = message.params[2]
+					channel.topic_created_time = message.params[3]
 
 				# Sort plugins based on priority
 				plugins = []
@@ -353,8 +292,9 @@ class Parser(blackbox.parser.Parser):
 							plugin[0].call(message)
 						except AuthorityError as e:
 							log = logging.getLogger("Account")
-							log.warn("User {0} has no access to command!")
-							# TODO check for config setting to send user /NOTICE
+							log.warn("User {0} has no access to command!".format(e.user.nick))
+							if self.bot.config.get("account.warn_user_on_autherror", False):
+								self.bot.ircsock.notice(e.user.nick, e.message)
 						except Exception as e:
 							logger.exception(repr(e))
 

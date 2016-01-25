@@ -133,11 +133,14 @@ class Parser(blackbox.parser.Parser):
 
 				if message.command == "QUIT":
 					name = message.origin()[1:]
-					chan = message.params[0]
 					if name != self.bot.ircsock.getnick():
 						user = self.bot.users.get_user(name)
-						for channel in user.channels.values():
-							channel = channel[0]
+						channels = user.get_channels()
+						for channel in channels:
+							# Remove channels from user object
+							user.remove_channel(channel)
+							# Remove user from each channel object
+							channel = self.bot.channels.get_channel(channel)
 							channel.remove_user(name)
 
 				if message.command == "NICK":
@@ -295,7 +298,7 @@ class Parser(blackbox.parser.Parser):
 						except AuthorityError as e:
 							log = logging.getLogger("Account")
 							log.warn("User {0} has no access to command!".format(e.user.nick))
-							if self.bot.config.get("account.warn_user_on_autherror", False):
+							if self.bot.config.get("plugins.account.warn_user_on_autherror", False):
 								self.bot.ircsock.notice(e.user.nick, e.message)
 						except Exception as e:
 							logger.exception(repr(e))

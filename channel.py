@@ -51,14 +51,14 @@ class Channel(object):
 		name                - The channels name
 		created             - The creation date of the channel (Numeric 329)
 		modes               - The channels modes
-		users               - A list of User objects for each user in the channel #TODO: fix
+		users               - A dict of User objects and their oplevel for each user in the channel
 		user_count          - The number of User's in the channel
 		topic               - The channels topic
 		topic_created_by    - The name of the last User who edited the topic
 		topic_created_time  - The time the topic was created
 		key                 - The channels key
 	"""
-	def __init__(self, name):
+	def __init__(self, name, key=None):
 		self.name = name
 		self.created = None
 		self.modes = []
@@ -67,7 +67,7 @@ class Channel(object):
 		self.topic = None
 		self.topic_created_by = None
 		self.topic_created_time = None
-		self.key = None
+		self.key = key
 
 	def set_modes(self, mode):
 		"""We expect modes to be a string, can be multiple modes"""

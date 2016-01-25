@@ -1,36 +1,34 @@
 {
     "default": {
-        "bacon": [
-            null,
-            "To cook bacon for someone, use @bacon"
-        ],
         "channels": [
             [
-                "#hacking"
+                "#h"
             ],
             "(list) A list of channels to /JOIN on connect"
         ],
-        "enabled": [
+        "channels.autorejoin.delay": [
+            15,
+            "(int) How long to wait in seconds before rejoining, 0 to disable"
+        ],
+        "channels.autorejoin.harass": [
             false,
+            "(bool) Whether to rejoin and kick the kicker (Requires Oper)"
+        ],
+        "channels.autorejoin.harass_message": [
+            "Wow, that's pretty fucking rude mate!",
+            "(str) Kick message for autorejoin"
+        ],
+        "channels.autorejoin.on_kick": [
+            false,
+            "(bool) Whether to autorejoin a channel when kicked"
+        ],
+        "command_trigger": [
+            "@",
+            "(str) The character string used to trigger commands"
+        ],
+        "enabled": [
+            true,
             "(bool) True if this connection is to be started"
-        ],
-        "exec": [
-            null,
-            "Exec executes a given python string"
-        ],
-        "exec.allowed": [
-            [
-                "Ferus!anonymous@the.interwebs"
-            ],
-            "(list) Holds a list of full IRC hostmasks (nick!ident@host) of people who are allowed to use the !exec command"
-        ],
-        "general": [
-            null,
-            "Supplies plugin @reload, @join, @part, and @quit"
-        ],
-        "help": [
-            null,
-            "Provides @help for all plugins and config settings"
         ],
         "host": [
             "irc.datnode.net",
@@ -41,8 +39,16 @@
             "(str) IRC Ident to use"
         ],
         "nickname": [
-            "WhergBot",
+            "WhergBotv3",
             "(str) IRC Nickname to use"
+        ],
+        "nickname.alt": [
+            "WhergBotv3-",
+            "(str) Alternative nickname to use when main is taken"
+        ],
+        "nickserv.nick_in_use": [
+            "alt_nick",
+            "(str/None) What to do when username is in use, \u0002alt_nick\u0002 or \u0002ghost\u0002"
         ],
         "nickserv.password": [
             null,
@@ -50,7 +56,7 @@
         ],
         "oper": [
             null,
-            "(str/None) The username to send with /OPER, default: None"
+            "(str/None) The username to send with /OPER"
         ],
         "oper.modes": [
             null,
@@ -58,39 +64,497 @@
         ],
         "oper.password": [
             null,
-            "(str/None) The password to use with /OPER, default: None"
+            "(str/None) The password to use with /OPER"
         ],
-        "permissions.denied": [
-            "You do not have permission to access this command",
-            "(str) Permission deny message for plugin @reload"
+        "permissions.user.april": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user April"
+        ],
+        "permissions.user.berp": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user berp"
+        ],
+        "permissions.user.boris": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user Boris"
+        ],
+        "permissions.user.c8h10n4o2": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user C8H10N4O2"
+        ],
+        "permissions.user.emma_usrs": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user emma_usrs"
+        ],
+        "permissions.user.ferus": [
+            {
+                "authenticated": false,
+                "certfp": [
+                    "e486ca3a446840367787fd13c0b9da8b970892f97303975de85e5f7bb068655a"
+                ],
+                "hostmask": [
+                    "Ferus!anonymous@the.interwebs"
+                ],
+                "level": 0,
+                "password": "60522d2107e739802b0cdb1328454c23de6c15286c732cb6335bce4e44deb339c254784318a7fabc2df7315c7100e7d63cd1594d1e1e5cf3e9c9c5055dada867",
+                "username": "h"
+            },
+            "Permission Information for user Ferus"
+        ],
+        "permissions.user.flav": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user flav"
+        ],
+        "permissions.user.gentbot": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user gentbot"
+        ],
+        "permissions.user.giraffe": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user giraffe"
+        ],
+        "permissions.user.h": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user h"
+        ],
+        "permissions.user.hiphitler": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user hiphitler"
+        ],
+        "permissions.user.hollander": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user hollander"
+        ],
+        "permissions.user.izumi": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user izumi"
+        ],
+        "permissions.user.joseph": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user Joseph"
+        ],
+        "permissions.user.maidnaut": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user maidnaut"
+        ],
+        "permissions.user.man": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user man"
+        ],
+        "permissions.user.mr_pacific": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user mr_pacific"
+        ],
+        "permissions.user.murasa": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user Murasa"
+        ],
+        "permissions.user.muvlon": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user Muvlon"
+        ],
+        "permissions.user.p": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user p"
+        ],
+        "permissions.user.politik": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user Politik"
+        ],
+        "permissions.user.q": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user q"
+        ],
+        "permissions.user.rayzor": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user rayZor"
+        ],
+        "permissions.user.ryuusei": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user Ryuusei"
+        ],
+        "permissions.user.seisatsu": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user Seisatsu"
+        ],
+        "permissions.user.slowpoke": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user slowpoke"
+        ],
+        "permissions.user.stal": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user stal"
+        ],
+        "permissions.user.whergbot": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user WhergBot"
+        ],
+        "permissions.user.whergbotv3": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user WhergBotv3"
+        ],
+        "permissions.user.wolfie": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user Wolfie"
+        ],
+        "permissions.user.wowaname": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user wowaname"
+        ],
+        "permissions.user.yiffer": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user Yiffer"
         ],
         "plugins": [
             [
+                "Plugins/Account/Account.py",
+                "Plugins/Asl/Asl.py",
                 "Plugins/Bacon/Bacon.py",
+                "Plugins/Bible/Bible.py",
+                "Plugins/Choice/Choice.py",
+                "Plugins/EightBall/EightBall.py",
                 "Plugins/Exec/Exec.py",
+                "Plugins/Fapget/Fapget.py",
+                "Plugins/FuckMyLife/FuckMyLife.py",
                 "Plugins/General/General.py",
                 "Plugins/Help/Help.py",
+                "Plugins/InsultGenerator/InsultGenerator.py",
+                "Plugins/LastSeen/LastSeen.py",
                 "Plugins/PrettyPrinter/PrettyPrinter.py",
                 "Plugins/Services/Services.py"
-            ]
+            ],
+            "(list) A list of plugins to load"
         ],
-        "port": [
-            6667,
-            "(int) Port of the IRC server to connect to"
+        "plugins.account": [
+            null,
+            "Handles user authentication to the bot"
         ],
-        "prettyprinter": [
+        "plugins.account.salt": [
+            "superSecretSaltString",
+            "(str) Salt to use when salting user passwords"
+        ],
+        "plugins.account.warn_user_on_autherror": [
+            true,
+            "(bool) /NOTICE user on AuthorityError?"
+        ],
+        "plugins.asl": [
+            null,
+            "Asl - Random Age/Sex/Location Generator"
+        ],
+        "plugins.bacon": [
+            null,
+            "To cook bacon for someone, use @bacon"
+        ],
+        "plugins.bible": [
+            null,
+            "Provides the King James v3 Bible"
+        ],
+        "plugins.bible.database": [
+            "Plugins/Bible/King_James_Bible.sql3",
+            "(str) Path to the sqlite3 King James Bible file"
+        ],
+        "plugins.choice": [
+            null,
+            "Picks a random item from a comma delimited list"
+        ],
+        "plugins.eightball": [
+            null,
+            "Ask the magic 8ball a question and recieve an answer!"
+        ],
+        "plugins.exec": [
+            null,
+            "Exec executes a given python string"
+        ],
+        "plugins.exec.permission_levels.exec": [
+            0,
+            "(int) Required level to exec raw python"
+        ],
+        "plugins.fapget": [
+            null,
+            "Provides a random list of things for people to @fapget to"
+        ],
+        "plugins.fapget.fap_allowed": [
+            [
+                "Ferus!anonymous@the.interwebs"
+            ],
+            "(list) A list of complete IRC hosts that are allowed to add faps"
+        ],
+        "plugins.fuckmylife": [
+            null,
+            "Polls random FML's from FMyLife.com"
+        ],
+        "plugins.general": [
+            null,
+            "Supplies plugin @reload, @join, @part, and @quit"
+        ],
+        "plugins.general.permission_levels.join": [
+            0,
+            "(int) Required level to have bot join a channel"
+        ],
+        "plugins.general.permission_levels.part": [
+            0,
+            "(int) Required level to have bot part a channel"
+        ],
+        "plugins.general.permission_levels.quit": [
+            0,
+            "(int) Required level to have bot quit the server"
+        ],
+        "plugins.general.permission_levels.reload": [
+            0,
+            "(int) Required level to reload bot plugins"
+        ],
+        "plugins.help": [
+            null,
+            "Provides @help for all plugins and config settings"
+        ],
+        "plugins.insult": [
+            null,
+            "Polls insultgenerator.org for a random insult."
+        ],
+        "plugins.lastseen": [
+            null,
+            "Stores the last time a user has been seen"
+        ],
+        "plugins.lastseen.blacklist": [
+            [],
+            "(list) List of channels to not record"
+        ],
+        "plugins.lastseen.database_path": [
+            "Plugins/LastSeen/lastseen-default.sql3",
+            "(str) Path to the database, use :memory: to not save to disk"
+        ],
+        "plugins.lastseen.timestamp": [
+            "\u0002%h %d, %Y\u0002 around \u0002%I:%M:%S %p\u0002",
+            "(str) Timestamp message format"
+        ],
+        "plugins.prettyprinter": [
             null,
             "pretty prints a formatted IRC message to the controlling terminal"
+        ],
+        "port": [
+            6697,
+            "(int) Port of the IRC server to connect to"
         ],
         "realname": [
             "WhergBot [3.0] Ferus",
             "(str) IRC Realname to use"
-        ],
-        "reload.allowed": [
-            [
-                "Ferus!anonymous@the.interwebs"
-            ],
-            "(list) Holds a list of full IRC hostmasks (nick!ident@host) of people who are allowed to use the @reload command"
         ],
         "reload.wait": [
             5,
@@ -98,10 +562,10 @@
         ],
         "server_password": [
             null,
-            "(str/None) The password to send with /PASS, default: None"
+            "(str/None) The password to send with /PASS"
         ],
         "ssl": [
-            false,
+            true,
             "(bool) True if using SSL to connect"
         ]
     }

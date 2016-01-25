@@ -3,3 +3,4 @@
 *.log
 .ropeproject
 blackbox/*
+*.sql3

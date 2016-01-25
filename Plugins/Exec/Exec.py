@@ -24,18 +24,11 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe(self.name, None, _help="Exec executes a given python string")
-		if not self.bot.config.get("permissions.owner"):
-			self.bot.config.set_safe("permissions.owner", [],
-				_help="(list) Holds a list of full IRC hostmasks (nick!ident@host) " \
-				"of people who are allowed to use owner commands")
-		if not self.bot.config.get("permissions.exec"):
-			self.bot.config.set_safe("permissions.exec", self.bot.config.get("permissions.owner", []),
-				_help="(list) Holds a list of full IRC hostmasks (nick!ident@host) " \
-				"of people who are allowed to use the @exec command")
-		if self.bot.config.get("permissions.exec") == []:
-			logger.info("Please insert your full IRC hostmask (nick!ident@host) "\
-				"in the config (permissions.exec) to use this plugin")
+		self.bot.config.set_safe("plugins."+self.name, None, _help="Exec executes a given python string")
+		self.bot.config.set_safe("plugins."+self.name+".permission_levels.exec"
+			,0
+			,_help="(int) Required level to exec raw python"
+		)
 		return True
 
 	def call(self, message):
@@ -43,13 +36,14 @@ class Plugin(BasicPlugin):
 			return None
 
 		origin = message.params[0] if message.params[0] != self.bot.ircsock.getnick() else message.origin()[1:]
+		user = self.bot.users.get_user(message.origin()[1:])
 
 		if message.params[1] == self.bot.config.get("command_trigger")+"exec":
-			if message.prefix[1:] in self.bot.config.get("permissions.owner") or \
-				message.prefix[1:] in self.bot.config.get("permissions.exec"):
-				try:
-					exec(' '.join(message.params[2:]))
-				except Exception as e:
-					self.bot.ircsock.say(origin, repr(e))
-			else:
-				raise AuthorityError(self.bot, message.origin()[1:], "You are not authorized to use this command!")
+			if user.account.auth.get("level") > self.bot.config.get("plugins."+self.name+".permission_levels.exec") and \
+				user.account.auth.get("authenticated"):
+				raise AuthorityError(self.bot, user.nick, "You do not have permission to access this command")
+
+			try:
+				exec(' '.join(message.params[2:]))
+			except Exception as e:
+				self.bot.ircsock.say(origin, repr(e))

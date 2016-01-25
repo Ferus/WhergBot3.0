@@ -63,7 +63,8 @@ class Plugin(BasicPlugin):
 			user = self.bot.users.get_user(message.origin()[1:])
 
 			if message.params[1] == self.bot.config.get("command_trigger")+"reload" and len(message.params) == 3:
-				if user.account.auth.get("level") > self.bot.config.get("plugins."+self.name+".permission_levels.reload"):
+				if user.account.auth.get("level") > self.bot.config.get("plugins."+self.name+".permission_levels.reload") and \
+					user.account.auth.get("authenticated"):
 					raise AuthorityError(self.bot, user.nick, "You do not have permission to access this command")
 
 				plugin = message.params[2]
@@ -107,8 +108,6 @@ class Plugin(BasicPlugin):
 				delay = self.bot.config.get("channels.autorejoin.delay")
 				if delay != 0:
 					time.sleep(delay)
-				# TODO add support for keys
-				# Get it from self.bot.channels.get_channel().key
 				self.bot.ircsock.join(message.params[0])
 
 				if self.bot.config.get("channels.autorejoin.harass") and self.bot.is_oper:
@@ -116,4 +115,5 @@ class Plugin(BasicPlugin):
 
 
 # TODO
-# add support for keys in @join and @part
+# add support for keys in @join and @part and autorejoin
+# Get it from self.bot.channels.get_channel().key

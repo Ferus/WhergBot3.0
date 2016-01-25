@@ -118,7 +118,9 @@ class Parser(blackbox.parser.Parser):
 						user = self.bot.users.get_user(name, create=True)
 						channel = self.bot.channels.get_channel(message.params[0])
 						if user.nick not in channel.get_users():
-							channel.add_user(user, None)
+							channel.add_user(user)
+						if channel.name not in user.get_channels():
+							user.add_channel(channel)
 
 				if message.command == "PART":
 					name = message.origin()[1:]

@@ -18,8 +18,8 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe("plugins."+self.name, None, "Poll the internet for a words etymology")
-		return True
+		self.bot.config.set_safe("plugins."+self.name, False, "Poll the internet for a words etymology")
+		return self.bot.config.get("plugins."+self.name)
 
 	def call(self, message):
 		if message.command != "PRIVMSG":

@@ -37,12 +37,12 @@ class Plugin(BasicPlugin):
 			return False
 
 	def hook(self):
-		self.bot.config.set_safe("plugins."+self.name, None, "Provides a random list of things for people to @fapget to")
+		self.bot.config.set_safe("plugins."+self.name, False, "Provides a random list of things for people to @fapget to")
 		self.bot.config.set_safe("plugins."+self.name+".fap_allowed"
 			,['Ferus!anonymous@the.interwebs']
 			,_help="(list) A list of complete IRC hosts that are allowed to add faps"
 		)
-		return self.load_faps()
+		return self.load_faps() and self.bot.config.get("plugins."+self.name)
 
 	def call(self, message):
 		if message.command != "PRIVMSG":

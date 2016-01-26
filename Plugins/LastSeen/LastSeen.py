@@ -17,7 +17,7 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe("plugins."+self.name, None, "Stores the last time a user has been seen")
+		self.bot.config.set_safe("plugins."+self.name, False, "Stores the last time a user has been seen")
 		self.bot.config.set_safe("plugins."+self.name+".database_path"
 			,"Plugins/LastSeen/lastseen-{self.bot.name}.sql3".format(self=self)
 			,_help="(str) Path to the database, use :memory: to not save to disk"
@@ -28,7 +28,7 @@ class Plugin(BasicPlugin):
 			,_help="(str) Timestamp message format"
 		)
 		self.Seen = LastSeen(database=self.bot.config.get("plugins."+self.name+".database_path"))
-		return True
+		return self.bot.config.get("plugins."+self.name)
 
 	def call(self, message):
 		if message.command != "PRIVMSG":

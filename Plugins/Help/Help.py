@@ -21,8 +21,8 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe("plugins."+self.name, None, _help="Provides @help for all plugins and config settings")
-		return True
+		self.bot.config.set_safe("plugins."+self.name, False, _help="Provides @help for all plugins and config settings")
+		return self.bot.config.get("plugins."+self.name)
 
 	def call(self, message):
 		if message.command != "PRIVMSG":

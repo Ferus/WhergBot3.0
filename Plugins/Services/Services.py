@@ -93,13 +93,13 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe("oper", None, _help="(str/None) The username to send with /OPER")
+		self.bot.config.set_safe("oper", None, _help="(FalseNone) The username to send with /OPER")
 		self.bot.config.set_safe("oper.password", None, _help="(str/None) The password to use with /OPER")
 		self.bot.config.set_safe("oper.modes", None, _help="(str/None) Extra modes to set when /OPER'ing")
 		self.bot.config.set_safe("nickserv.password", None, _help="(str/None) The password to authenticate to NickServ with")
 		self.bot.config.set_safe("nickserv.nick_in_use", "alt_nick", _help="(str/None) What to do when username is in use, \x02alt_nick\x02 or \x02ghost\x02")
 		self.bot.config.set_safe("nickname.alt", self.bot.config.get("nickname") + "-", _help="(str) Alternative nickname to use when main is taken")
-		return True
+		return self.bot.config.get("plugins."+self.name)
 
 	def call(self, message):
 		if message.command == "001": # We only want these called on connect

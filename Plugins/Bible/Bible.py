@@ -16,7 +16,7 @@ class Plugin(BasicPlugin):
 		self.connection.close()
 
 	def hook(self):
-		self.bot.config.set_safe("plugins."+self.name, None, "Provides the King James v3 Bible")
+		self.bot.config.set_safe("plugins."+self.name, False, "Provides the King James v3 Bible")
 		self.bot.config.set_safe("plugins."+self.name+".database", "Plugins/Bible/King_James_Bible.sql3", "(str) Path to the sqlite3 King James Bible file")
 
 		self.connection = sqlite3.connect(self.bot.config.get("plugins."+self.name+".database"), check_same_thread = False)
@@ -27,7 +27,7 @@ class Plugin(BasicPlugin):
 			self.valid_books.append(book[0].lower())
 		del cursor
 		del books
-		return True
+		return self.bot.config.get("plugins."+self.name)
 
 	def call(self, message):
 		if message.command != "PRIVMSG":

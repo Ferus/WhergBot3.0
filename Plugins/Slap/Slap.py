@@ -15,12 +15,11 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe("plugins."+self.name, None, "Slap!")
+		self.bot.config.set_safe("plugins."+self.name, False, "Slap!")
 		self.bot.config.set_safe("plugins."+self.name+".fishfile", "Plugins/Slap/fish.txt", "(str) Fish to slap with")
-
 		with open(self.bot.config.get("plugins."+self.name+".fishfile"), 'r') as fish:
 			self.fish = fish.read().splitlines()
-		return True
+		return self.bot.config.get("plugins."+self.name)
 
 	def call(self, message):
 		if message.command != "PRIVMSG":

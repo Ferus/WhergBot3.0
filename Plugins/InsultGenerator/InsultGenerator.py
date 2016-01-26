@@ -17,8 +17,8 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe("plugins."+self.name, None, "Polls insultgenerator.org for a random insult.")
-		return True
+		self.bot.config.set_safe("plugins."+self.name, False, "Polls insultgenerator.org for a random insult.")
+		return self.bot.config.get("plugins."+self.name)
 
 	def call(self, message):
 		if message.command != "PRIVMSG":

@@ -39,10 +39,10 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe("plugins."+self.name, None, _help="Handles user authentication to the bot")
+		self.bot.config.set_safe("plugins."+self.name, False, _help="Handles user authentication to the bot")
 		self.bot.config.set_safe("plugins."+self.name+".salt", "superSecretSaltString", _help="(str) Salt to use when salting user passwords")
 		self.bot.config.set_safe("plugins."+self.name+".warn_user_on_autherror", True, _help="(bool) /NOTICE user on AuthorityError?")
-		return True
+		return self.bot.config.get("plugins."+self.name)
 
 	def call(self, message):
 		if message.command != "PRIVMSG":

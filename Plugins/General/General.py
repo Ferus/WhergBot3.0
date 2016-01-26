@@ -17,7 +17,7 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe("plugins."+self.name, None, _help="Supplies plugin @reload, @join, @part, and @quit")
+		self.bot.config.set_safe("plugins."+self.name, False, _help="Supplies plugin @reload, @join, @part, and @quit")
 
 		self.bot.config.set_safe("plugins."+self.name+".permission_levels.reload"
 			,0
@@ -52,7 +52,7 @@ class Plugin(BasicPlugin):
 			,"Wow, that's pretty fucking rude mate!"
 			,_help="(str) Kick message for autorejoin"
 		)
-		return True
+		return self.bot.config.get("plugins."+self.name)
 
 	def call(self, message):
 		if message.command == "001":

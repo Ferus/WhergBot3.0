@@ -76,7 +76,7 @@ class PluginManager(object):
 			raise PluginError("Plugin class for plugin {0} does not contain a call method!".format(mname))
 
 		if not instance.hook():
-			raise PluginError("Plugin class for plugin {0} can not be hooked!".format(mname))
+			raise PluginError("Plugin class for plugin {0} can not be hooked! Is it enabled?".format(mname))
 
 		self.__plugins[instance.name] = [instance, instance.priority, path]
 
@@ -137,5 +137,5 @@ class PluginManager(object):
 			return False
 		path = self.__plugins[plugin][2]
 		self.unload(plugin)
-		self.load(path)
+		self.load(list(path))
 

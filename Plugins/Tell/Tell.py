@@ -16,10 +16,8 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe("plugins."+self.name, None, "Tell a user a message.")
+		self.bot.config.set_safe("plugins."+self.name, False, "Tell a user a message.")
 		self.bot.config.set_safe("plugins."+self.name+".database", "Plugins/Tell/tell.sql3", "(str) Tell database.")
-
-
 		self.connection = sqlite3.connect(self.bot.config.get("plugins."+self.name+".database"), check_same_thread=False)
 		cursor = self.connection.cursor()
 		cursor.execute('CREATE TABLE IF NOT EXISTS tell ('
@@ -28,7 +26,7 @@ class Plugin(BasicPlugin):
 			'message TEXT,'
 			'origin TEXT)'
 		)
-		return True
+		return self.bot.config.get("plugins."+self.name)
 
 	def call(self, message):
 		if message.command != "PRIVMSG":

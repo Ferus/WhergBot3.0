@@ -16,11 +16,11 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe("plugins."+self.name, None, "Replaces random words with `butt`")
+		self.bot.config.set_safe("plugins."+self.name, False, "Replaces random words with `butt`")
 		self.bot.config.set_safe("plugins."+self.name+".channels", [], "(list) A list of allowed channels")
 		self.bot.config.set_safe("plugins."+self.name+".replyrate", 15, "(int) Percentage of replyrate, 0-100, lower = less.")
 		self.bot.config.set_safe("plugins."+self.name+".maxreplaces", 2, "(int) Maximum number of replaces allowed at once.")
-		return True
+		return self.bot.config.get("plugins."+self.name)
 
 	def call(self, message):
 		if message.command != "PRIVMSG":

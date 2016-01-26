@@ -59,11 +59,10 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe("plugins."+self.name, None, "Rules database.")
+		self.bot.config.set_safe("plugins."+self.name, False, "Rules database.")
 		self.bot.config.set_safe("plugins."+self.name+".database", "Plugins/Rules/Rules.sql3", "(str) Path to database")
-
 		self.Rules = RulesDatabase(self.bot.config.get("plugins."+self.name+".database"))
-		return True
+		return self.bot.config.get("plugins."+self.name)
 
 	def call(self, message):
 		if message.command != "PRIVMSG":

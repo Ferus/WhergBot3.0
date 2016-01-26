@@ -18,9 +18,9 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe("plugins."+self.name, None, "Polls random FML's from FMyLife.com")
+		self.bot.config.set_safe("plugins."+self.name, False, "Polls random FML's from FMyLife.com")
 		self.fmlGenerator = self.fml()
-		return True
+		return self.bot.config.get("plugins."+self.name)
 
 	def call(self, message):
 		if message.command != "PRIVMSG":

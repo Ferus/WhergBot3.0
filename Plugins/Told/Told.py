@@ -15,12 +15,11 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe("plugins."+self.name, None, "Get told!")
+		self.bot.config.set_safe("plugins."+self.name, False, "Get told!")
 		self.bot.config.set_safe("plugins."+self.name+".toldfile", "Plugins/Told/told.txt", "(str) Location of the toldfile.")
-
 		with open(self.bot.config.get("plugins."+self.name+".toldfile"), 'r') as told:
 			self.told = told.read().splitlines()
-		return True
+		return self.bot.config.get("plugins."+self.name)
 
 	def call(self, message):
 		if message.command != "PRIVMSG":

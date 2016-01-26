@@ -48,7 +48,7 @@
         ],
         "nickserv.nick_in_use": [
             "alt_nick",
-            "(str/None) What to do when username is in use, \u0002alt_nick\u0002 or \u0002ghost\u0002"
+            "(str) What to do when username is in use, \u0002alt_nick\u0002 or \u0002ghost\u0002"
         ],
         "nickserv.password": [
             null,
@@ -66,43 +66,48 @@
             null,
             "(str/None) The password to use with /OPER"
         ],
-        "permissions.user.ferus": [
-            {
-                "authenticated": false,
-                "certfp": [
-                    "e486ca3a446840367787fd13c0b9da8b970892f97303975de85e5f7bb068655a"
-                ],
-                "hostmask": [
-                    "Ferus!anonymous@the.interwebs"
-                ],
-                "level": 0,
-                "password": "60522d2107e739802b0cdb1328454c23de6c15286c732cb6335bce4e44deb339c254784318a7fabc2df7315c7100e7d63cd1594d1e1e5cf3e9c9c5055dada867",
-                "username": "h"
-            },
-            "Permission Information for user Ferus"
-        ],
         "plugins": [
             [
                 "Plugins/Account/Account.py",
                 "Plugins/Asl/Asl.py",
                 "Plugins/Bacon/Bacon.py",
                 "Plugins/Bible/Bible.py",
+                "Plugins/Butt/Butt.py",
                 "Plugins/Choice/Choice.py",
+                "Plugins/CleverBot/CleverBot.py",
                 "Plugins/EightBall/EightBall.py",
+                "Plugins/Etymology/Etymology.py",
                 "Plugins/Exec/Exec.py",
                 "Plugins/Fapget/Fapget.py",
                 "Plugins/FuckMyLife/FuckMyLife.py",
                 "Plugins/General/General.py",
                 "Plugins/Help/Help.py",
+                "Plugins/Hug/Hug.py",
                 "Plugins/InsultGenerator/InsultGenerator.py",
+                "Plugins/Isup/Isup.py",
                 "Plugins/LastSeen/LastSeen.py",
+                "Plugins/Matix/Matix.py",
+                "Plugins/Next/Next.py",
+                "Plugins/Oven/Oven.py",
                 "Plugins/PrettyPrinter/PrettyPrinter.py",
-                "Plugins/Services/Services.py"
+                "Plugins/Quotes/Quotes.py",
+                "Plugins/Rules/Rules.py",
+                "Plugins/Roulette/Roulette.py",
+                "Plugins/Services/Services.py",
+                "Plugins/Slap/Slap.py",
+                "Plugins/SloganMaker/SloganMaker.py",
+                "Plugins/Tell/Tell.py",
+                "Plugins/Told/Told.py",
+                "Plugins/Uptime/Uptime.py",
+                "Plugins/UrbanDictionary/UrbanDictionary.py",
+                "Plugins/UrlAnnounce/UrlAnnounce.py",
+                "Plugins/WeedDice/WeedDice.py",
+                "Plugins/Wikipedia/Wikipedia.py"
             ],
             "(list) A list of plugins to load"
         ],
         "plugins.account": [
-            null,
+            true,
             "Handles user authentication to the bot"
         ],
         "plugins.account.salt": [
@@ -114,31 +119,59 @@
             "(bool) /NOTICE user on AuthorityError?"
         ],
         "plugins.asl": [
-            null,
+            true,
             "Asl - Random Age/Sex/Location Generator"
         ],
         "plugins.bacon": [
-            null,
+            true,
             "To cook bacon for someone, use @bacon"
         ],
         "plugins.bible": [
-            null,
+            true,
             "Provides the King James v3 Bible"
         ],
         "plugins.bible.database": [
             "Plugins/Bible/King_James_Bible.sql3",
             "(str) Path to the sqlite3 King James Bible file"
         ],
+        "plugins.butt": [
+            false,
+            "Replaces random words with `butt`"
+        ],
+        "plugins.butt.channels": [
+            [],
+            "(list) A list of allowed channels"
+        ],
+        "plugins.butt.maxreplaces": [
+            2,
+            "(int) Maximum number of replaces allowed at once."
+        ],
+        "plugins.butt.replyrate": [
+            20,
+            null
+        ],
         "plugins.choice": [
-            null,
+            true,
             "Picks a random item from a comma delimited list"
         ],
+        "plugins.cleverbot": [
+            false,
+            "Talk with cleverbot!"
+        ],
+        "plugins.cleverbot.channels": [
+            [],
+            "(list) List of allowed channels"
+        ],
         "plugins.eightball": [
-            null,
+            true,
             "Ask the magic 8ball a question and recieve an answer!"
         ],
+        "plugins.etymology": [
+            true,
+            "Poll the internet for a words etymology"
+        ],
         "plugins.exec": [
-            null,
+            true,
             "Exec executes a given python string"
         ],
         "plugins.exec.permission_levels.exec": [
@@ -146,7 +179,7 @@
             "(int) Required level to exec raw python"
         ],
         "plugins.fapget": [
-            null,
+            true,
             "Provides a random list of things for people to @fapget to"
         ],
         "plugins.fapget.fap_allowed": [
@@ -156,11 +189,11 @@
             "(list) A list of complete IRC hosts that are allowed to add faps"
         ],
         "plugins.fuckmylife": [
-            null,
+            true,
             "Polls random FML's from FMyLife.com"
         ],
         "plugins.general": [
-            null,
+            true,
             "Supplies plugin @reload, @join, @part, and @quit"
         ],
         "plugins.general.permission_levels.join": [
@@ -180,15 +213,27 @@
             "(int) Required level to reload bot plugins"
         ],
         "plugins.help": [
-            null,
+            true,
             "Provides @help for all plugins and config settings"
         ],
+        "plugins.hug": [
+            true,
+            "Hugs for everyone, maybe."
+        ],
+        "plugins.hug.allowed_level": [
+            50,
+            "(int) Default level to allow hugs"
+        ],
         "plugins.insult": [
-            null,
+            true,
             "Polls insultgenerator.org for a random insult."
         ],
+        "plugins.isup": [
+            true,
+            "Check if websites are up."
+        ],
         "plugins.lastseen": [
-            null,
+            true,
             "Stores the last time a user has been seen"
         ],
         "plugins.lastseen.blacklist": [
@@ -203,9 +248,282 @@
             "\u0002%h %d, %Y\u0002 around \u0002%I:%M:%S %p\u0002",
             "(str) Timestamp message format"
         ],
+        "plugins.matix": [
+            false,
+            "matix has u"
+        ],
+        "plugins.matix.directory": [
+            "Plugins/Matix/Spams/",
+            "(str) Directory with the files"
+        ],
+        "plugins.matix.permission_level": [
+            0,
+            "(int) Permission level for matix"
+        ],
+        "plugins.matix.require_oper": [
+            true,
+            "(bool) Whether bot should require oper perms to use this"
+        ],
+        "plugins.next": [
+            true,
+            "Next!"
+        ],
+        "plugins.oven": [
+            true,
+            "Oven all the things"
+        ],
+        "plugins.oven.time_max": [
+            11,
+            "(int) Maximum time to wait"
+        ],
+        "plugins.oven.time_min": [
+            7,
+            "(int) Minimum time to wait"
+        ],
         "plugins.prettyprinter": [
-            null,
+            true,
             "pretty prints a formatted IRC message to the controlling terminal"
+        ],
+        "plugins.quotes": [
+            true,
+            "Quotes database."
+        ],
+        "plugins.quotes.database": [
+            "Plugins/Quotes/Quotes-default.sql3",
+            "(str) Path to database (or :memory for instance only)"
+        ],
+        "plugins.quotes.permission_level": [
+            0,
+            "(int) Permission level to add or delete quotes"
+        ],
+        "plugins.roulette": [
+            true,
+            "Russian Roulette"
+        ],
+        "plugins.roulette.channels": [
+            [
+                "#h"
+            ],
+            "(list) List of channels to play on"
+        ],
+        "plugins.roulette.enable_klines": [
+            false,
+            "(bool) Enable klines instead of channel kicks. (Requires oper)"
+        ],
+        "plugins.roulette.guns": [
+            [
+                [
+                    "Smith & Wesson",
+                    6
+                ],
+                [
+                    "Colt Anaconda",
+                    6
+                ],
+                [
+                    "Colt Python",
+                    6
+                ],
+                [
+                    "Magnum",
+                    6
+                ],
+                [
+                    "Reichsrevolver",
+                    6
+                ],
+                [
+                    "Smith & Wesson Centennial",
+                    5
+                ],
+                [
+                    "Smith & Wesson Ladysmith",
+                    5
+                ],
+                [
+                    "Walker Colt",
+                    6
+                ],
+                [
+                    "Desert Eagle",
+                    7
+                ],
+                [
+                    "92FS",
+                    17
+                ],
+                [
+                    "P99",
+                    16
+                ],
+                [
+                    "PPK",
+                    7
+                ],
+                [
+                    "Single Action Army",
+                    6
+                ],
+                [
+                    "M9 Rafica",
+                    20
+                ],
+                [
+                    "S&W .500",
+                    5
+                ],
+                [
+                    "Tokarev",
+                    8
+                ],
+                [
+                    "G18",
+                    19
+                ],
+                [
+                    "G17",
+                    17
+                ],
+                [
+                    "Taurus Raging Bull",
+                    5
+                ],
+                [
+                    "Portal Gun",
+                    6
+                ],
+                [
+                    "Star Wars Blaster Pistol",
+                    8
+                ]
+            ],
+            "(list) List of guns to use"
+        ],
+        "plugins.roulette.reasons": [
+            [
+                "Head blown off by a {gun}",
+                "Shot themself to death with a {gun}",
+                "Lodged lead in their greymatter with a {gun}",
+                "Blew their mind (literally) with a {gun}",
+                "Sprayed brain goop all over the walls with a {gun}",
+                "Took the easy way out with a {gun}",
+                "Got lit up by a {gun}"
+            ],
+            "(list) List of reasons to use"
+        ],
+        "plugins.rules": [
+            true,
+            "Rules database."
+        ],
+        "plugins.rules.database": [
+            "Plugins/Rules/Rules.sql3",
+            "(str) Path to database"
+        ],
+        "plugins.slap": [
+            true,
+            "Slap!"
+        ],
+        "plugins.slap.fishfile": [
+            "Plugins/Slap/fish.txt",
+            "(str) Fish to slap with"
+        ],
+        "plugins.sloganmaker": [
+            true,
+            "Creates slogans!"
+        ],
+        "plugins.tell": [
+            true,
+            "Tell a user a message."
+        ],
+        "plugins.tell.database": [
+            "Plugins/Tell/tell.sql3",
+            "(str) Tell database."
+        ],
+        "plugins.told": [
+            true,
+            "Get told!"
+        ],
+        "plugins.told.toldfile": [
+            "Plugins/Told/told.txt",
+            "(str) Location of the toldfile."
+        ],
+        "plugins.uptime": [
+            true,
+            "Uptime"
+        ],
+        "plugins.urbandictionary": [
+            true,
+            "UrbanDictionary Definitions"
+        ],
+        "plugins.urlannounce": [
+            true,
+            "Announces url titles"
+        ],
+        "plugins.urlannounce.blacklist": [
+            ["wikipedia.org"],
+            "(list) list of hosts (regexs) to not fetch titles for"
+        ],
+        "plugins.urlannounce.no_title": [
+            "No Title",
+            "(str) The string shown when there is no title"
+        ],
+        "plugins.urlannounce.url_regex": [
+            "(https?|ftp):\\/\\/(([\\w\\-]+\\.)+[a-zA-Z]{2,6}|\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})(:\\d+)?(\\/([\\w\\-~.#\\/?=&;:+%!*\\[\\]@$\\'()+,|\\^]+)?)?",
+            "(str) the regex for matching url's"
+        ],
+        "plugins.weeddice": [
+            true,
+            "WeedDice"
+        ],
+        "plugins.weeddice.dice": [
+            {
+                "1": [
+                    "You",
+                    "Player of your choice",
+                    "Player above you",
+                    "Next player to send a message",
+                    "Social (everyone)",
+                    "Nobody"
+                ],
+                "2": [
+                    "take a puff",
+                    "take 2 tokes",
+                    "take a huge hit",
+                    "take a tiny toke",
+                    "finish a bowl",
+                    "just chill",
+                    "kill it with fire"
+                ],
+                "3": [
+                    "on your knees",
+                    "while holding your nose",
+                    "while typing",
+                    "with your eyes closed",
+                    "on one foot",
+                    "while spinning in a circle"
+                ],
+                "4": [
+                    "then tell a joke",
+                    "then post a song",
+                    "then post a video",
+                    "then type with your eyes closed",
+                    "with the player below you",
+                    "twice"
+                ]
+            },
+            "WeedDice"
+        ],
+        "plugins.wikipedia": [
+            true,
+            "Wikipedia."
+        ],
+        "plugins.wikipedia.cachetime": [
+            36288000,
+            "(int) How long to cache pages."
+        ],
+        "plugins.wikipedia.database": [
+            "Plugins/Wikipedia/wikicache.sql3",
+            "(str) Cache database location."
         ],
         "port": [
             6697,

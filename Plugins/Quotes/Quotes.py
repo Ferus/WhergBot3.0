@@ -114,12 +114,11 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe("plugins."+self.name, None, "Quotes database.")
+		self.bot.config.set_safe("plugins."+self.name, False, "Quotes database.")
 		self.bot.config.set_safe("plugins."+self.name+".permission_level", 0, "(int) Permission level to add or delete quotes")
 		self.bot.config.set_safe("plugins."+self.name+".database", ":memory:", "(str) Path to database (or :memory for instance only)")
-
 		self.Quotes = QuotesDatabase(self.bot.config.get("plugins."+self.name+".database"))
-		return True
+		return self.bot.config.get("plugins."+self.name)
 
 	def call(self, message):
 		if message.command != "PRIVMSG":

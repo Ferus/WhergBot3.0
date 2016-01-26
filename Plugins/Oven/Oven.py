@@ -17,10 +17,10 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe("plugins."+self.name, None, "Oven all the things")
+		self.bot.config.set_safe("plugins."+self.name, False, "Oven all the things")
 		self.bot.config.set_safe("plugins."+self.name+".time_min", 7, _help="(int) Minimum time to wait")
 		self.bot.config.set_safe("plugins."+self.name+".time_max", 11, _help="(int) Maximum time to wait")
-		return True
+		return self.bot.config.get("plugins."+self.name)
 
 	def call(self, message):
 		if message.command != "PRIVMSG":

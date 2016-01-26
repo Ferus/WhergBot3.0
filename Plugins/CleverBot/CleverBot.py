@@ -18,9 +18,9 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe("plugins."+self.name, None, "Talk with cleverbot!")
+		self.bot.config.set_safe("plugins."+self.name, False, "Talk with cleverbot!")
 		self.bot.config.set_safe("plugins."+self.name+".channels", [], "(list) List of allowed channels")
-		return True
+		return self.bot.config.get("plugins."+self.name)
 
 	def call(self, message):
 		if message.command != "PRIVMSG":

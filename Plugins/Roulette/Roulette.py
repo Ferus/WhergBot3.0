@@ -90,7 +90,7 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe("plugins."+self.name, None, "Russian Roulette")
+		self.bot.config.set_safe("plugins."+self.name, False, "Russian Roulette")
 		self.bot.config.set_safe("plugins."+self.name+".enable_klines", True, "(bool) Enable klines instead of channel kicks. (Requires oper)")
 		self.bot.config.set_safe("plugins."+self.name+".channels", [], "(list) List of channels to play on")
 		self.bot.config.set_safe("plugins."+self.name+".guns"
@@ -129,8 +129,7 @@ class Plugin(BasicPlugin):
 			]
 			,"(list) List of reasons to use"
 		)
-
-		return True
+		return self.bot.config.get("plugins."+self.name)
 
 	def call(self, message):
 		if message.command != "PRIVMSG":

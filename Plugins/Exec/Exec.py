@@ -24,12 +24,12 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe("plugins."+self.name, None, _help="Exec executes a given python string")
+		self.bot.config.set_safe("plugins."+self.name, False, _help="Exec executes a given python string")
 		self.bot.config.set_safe("plugins."+self.name+".permission_levels.exec"
 			,0
 			,_help="(int) Required level to exec raw python"
 		)
-		return True
+		return self.bot.config.get("plugins."+self.name)
 
 	def call(self, message):
 		if message.command != "PRIVMSG":

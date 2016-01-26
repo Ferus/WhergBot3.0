@@ -38,8 +38,8 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe("plugins."+self.name, None, "Ask the magic 8ball a question and recieve an answer!")
-		return True
+		self.bot.config.set_safe("plugins."+self.name, False, "Ask the magic 8ball a question and recieve an answer!")
+		return self.bot.config.get("plugins."+self.name)
 
 	def call(self, message):
 		if message.command != "PRIVMSG":

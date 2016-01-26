@@ -21,14 +21,12 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe("plugins."+self.name, None, "matix has u")
+		self.bot.config.set_safe("plugins."+self.name, False, "matix has u")
 		self.bot.config.set_safe("plugins."+self.name+".directory", "Plugins/Matix/Spams/", "(str) Directory with the files")
 		self.bot.config.set_safe("plugins."+self.name+".permission_level", 0, "(int) Permission level for matix")
 		self.bot.config.set_safe("plugins."+self.name+".require_oper", True, "(bool) Whether bot should require oper perms to use this")
-
 		self.files = os.listdir(self.bot.config.get("plugins."+self.name+".directory"))
-
-		return True
+		return self.bot.config.get("plugins."+self.name)
 
 	def call(self, message):
 		if message.command != "PRIVMSG":

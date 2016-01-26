@@ -16,9 +16,9 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
-		self.bot.config.set_safe("plugins."+self.name, None, "Hugs for everyone, maybe.")
+		self.bot.config.set_safe("plugins."+self.name, False, "Hugs for everyone, maybe.")
 		self.bot.config.set_safe("plugins."+self.name+".allowed_level", 50, _help="(int) Default level to allow hugs")
-		return True
+		return self.bot.config.get("plugins."+self.name)
 
 	def call(self, message):
 		if message.command != "PRIVMSG":

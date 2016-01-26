@@ -4,3 +4,6 @@
 [submodule "cleverbot"]
 	path = cleverbot
 	url = https://github.com/superboum/cleverbot.git
+[submodule "urbandict"]
+	path = urbandict
+	url = https://github.com/novel/py-urbandict.git

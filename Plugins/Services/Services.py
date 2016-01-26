@@ -93,6 +93,7 @@ class Plugin(BasicPlugin):
 		pass
 
 	def hook(self):
+		self.bot.config.set_safe("plugins."+self.name, True, _help="Anope Services Integration")
 		self.bot.config.set_safe("oper", None, _help="(FalseNone) The username to send with /OPER")
 		self.bot.config.set_safe("oper.password", None, _help="(str/None) The password to use with /OPER")
 		self.bot.config.set_safe("oper.modes", None, _help="(str/None) Extra modes to set when /OPER'ing")

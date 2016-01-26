@@ -66,6 +66,32 @@
             null,
             "(str/None) The password to use with /OPER"
         ],
+        "permissions.user.ferus": [
+            {
+                "authenticated": true,
+                "certfp": [
+                    "e486ca3a446840367787fd13c0b9da8b970892f97303975de85e5f7bb068655a"
+                ],
+                "hostmask": [
+                    "ferus!anonymous@the.interwebs"
+                ],
+                "level": 0,
+                "password": "60522d2107e739802b0cdb1328454c23de6c15286c732cb6335bce4e44deb339c254784318a7fabc2df7315c7100e7d63cd1594d1e1e5cf3e9c9c5055dada867",
+                "username": "h"
+            },
+            "Permission Information for user ferus"
+        ],
+        "permissions.user.whergbotv3": [
+            {
+                "authenticated": false,
+                "certfp": [],
+                "hostmask": [],
+                "level": 100,
+                "password": "",
+                "username": ""
+            },
+            "Permission Information for user whergbotv3"
+        ],
         "plugins": [
             [
                 "Plugins/Account/Account.py",
@@ -419,6 +445,10 @@
             "Plugins/Rules/Rules.sql3",
             "(str) Path to database"
         ],
+        "plugins.services": [
+            true,
+            "Anope Services Integration"
+        ],
         "plugins.slap": [
             true,
             "Slap!"
@@ -460,7 +490,9 @@
             "Announces url titles"
         ],
         "plugins.urlannounce.blacklist": [
-            ["wikipedia.org"],
+            [
+                "wikipedia.org"
+            ],
             "(list) list of hosts (regexs) to not fetch titles for"
         ],
         "plugins.urlannounce.no_title": [

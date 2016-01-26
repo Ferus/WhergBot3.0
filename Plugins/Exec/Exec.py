@@ -39,8 +39,8 @@ class Plugin(BasicPlugin):
 		user = self.bot.users.get_user(message.origin()[1:])
 
 		if message.params[1] == self.bot.config.get("command_trigger")+"exec":
-			if user.account.auth.get("level") > self.bot.config.get("plugins."+self.name+".permission_levels.exec") and \
-				user.account.auth.get("authenticated"):
+			if user.account.auth.get("level") > self.bot.config.get("plugins."+self.name+".permission_levels.exec") or \
+				not user.account.auth.get("authenticated"):
 				raise AuthorityError(self.bot, user.nick, "You do not have permission to access this command")
 
 			try:

@@ -53,7 +53,7 @@ class PluginManager(object):
 	def get(self, name):
 		return self.__plugins[name]
 
-	def _load(self, instance, path, mname):
+	def _load(self, instance, mname, path):
 		"""
 		Loads a plugin by path. `PluginError' will be raised when either:
 			A module cannot be loaded due to syntax/runtime/etc
@@ -137,5 +137,5 @@ class PluginManager(object):
 			return False
 		path = self.__plugins[plugin][2]
 		self.unload(plugin)
-		self.load(list(path))
+		self.load([path])
 

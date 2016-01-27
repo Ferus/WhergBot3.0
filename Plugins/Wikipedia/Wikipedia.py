@@ -8,6 +8,7 @@ import sqlite3
 import requests
 
 from plugin import BasicPlugin
+from utils import truncate
 
 WIKIPEDIA_URL_RE = re.compile(r"(?:https?:\/\/)?en.wikipedia\.org\/wiki\/.*?(?:\s|$)")
 
@@ -169,11 +170,3 @@ def replacetags(text):
 	text = re.sub("</?b>", "\x02", text)
 	return text
 
-def truncate(content, length=300, suffix='...'):
-	if len(content) <= length:
-		return content
-	else:
-		if content[-1] == suffix[0]:
-			content = content[0:-1]
-		x = ' '.join(content[:length+1].split(' ')[0:-1]) + "{0}".format(suffix)
-		return x

@@ -63,8 +63,8 @@ class Plugin(BasicPlugin):
 			user = self.bot.users.get_user(message.origin()[1:])
 
 			if message.params[1] == self.bot.config.get("command_trigger")+"reload" and len(message.params) == 3:
-				if user.account.auth.get("level") > self.bot.config.get("plugins."+self.name+".permission_levels.reload") and \
-					user.account.auth.get("authenticated"):
+				if user.account.auth.get("level") > self.bot.config.get("plugins."+self.name+".permission_levels.reload") or \
+					not user.account.auth.get("authenticated"):
 					raise AuthorityError(self.bot, user.nick, "You do not have permission to access this command")
 
 				plugin = message.params[2]

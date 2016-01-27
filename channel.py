@@ -84,13 +84,14 @@ class Channel(object):
 
 	def add_user(self, user, oplevel=None):
 		"""Adds a user object"""
-		if user.nick in self.users.keys():
+		if user.nick.lower() in self.users.keys():
 			raise Exception("That user is already listed")
-		self.users[user.nick] = [user, oplevel]
+		self.users[user.nick.lower()] = [user, oplevel]
 		self.user_count += 1
 
 	def remove_user(self, user):
 		"""Removes a user object from a channel by username"""
+		user = user.lower()
 		if user not in self.users.keys():
 			raise KeyError("That user is not listed")
 		del self.users[user]
@@ -102,12 +103,14 @@ class Channel(object):
 
 	def get_oplevel(self, user):
 		"""Returns the oplevel of given user (by name) on channel"""
+		user = user.lower()
 		if user not in self.users.keys():
 			raise KeyError("That user does not exist")
 		return self.users[user][1]
 
 	def set_oplevel(self, user, oplevel):
 		"""Sets the oplevel of given user (by name) on channel"""
+		user = user.lower()
 		if user not in self.users.keys():
 			raise KeyError("That user does not exist")
 		self.users[user][1] = oplevel

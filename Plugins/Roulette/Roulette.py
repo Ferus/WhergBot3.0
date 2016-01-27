@@ -71,8 +71,7 @@ class Gun(object):
 				return (True, reason)
 
 		else:
-			# No bullet, add and spin
-			self.load()
+			# No bullet
 			return (False, "\002*\002click\002*\002")
 
 
@@ -161,9 +160,7 @@ class Plugin(BasicPlugin):
 				self.gun = None
 			else:
 				self.bot.ircsock.say(origin, result[1])
-			self.gun.load()
-
-
-
+				self.gun.load()
+				self.bot.ircsock.say(origin, "Loading another round...")
 
 

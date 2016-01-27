@@ -7,6 +7,7 @@ import requests
 import logging
 
 from plugin import BasicPlugin
+from utils import truncate
 
 logger = logging.getLogger("UrlAnnounce")
 ip = sh.Command("/usr/bin/ip").bake("addr")
@@ -80,6 +81,7 @@ class Plugin(BasicPlugin):
 		if title:
 			title = re.sub("[\r|\n|\t]+", "", title.group(1))
 			title = html.unescape(title)
+			title = truncate(title)
 			return title
 		return self.bot.config.get("plugins."+self.name+".no_title")
 

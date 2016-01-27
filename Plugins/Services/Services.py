@@ -94,7 +94,7 @@ class Plugin(BasicPlugin):
 
 	def hook(self):
 		self.bot.config.set_safe("plugins."+self.name, True, _help="Anope Services Integration")
-		self.bot.config.set_safe("oper", None, _help="(FalseNone) The username to send with /OPER")
+		self.bot.config.set_safe("oper", None, _help="(False/None) The username to send with /OPER")
 		self.bot.config.set_safe("oper.password", None, _help="(str/None) The password to use with /OPER")
 		self.bot.config.set_safe("oper.modes", None, _help="(str/None) Extra modes to set when /OPER'ing")
 		self.bot.config.set_safe("nickserv.password", None, _help="(str/None) The password to authenticate to NickServ with")
@@ -121,4 +121,8 @@ class Plugin(BasicPlugin):
 			else:
 				pass
 
-		# check for nickserv's "auth to this nick" message as well
+		if message.command == "NOTICE":
+			#['WhergBot', 'This', 'nickname', 'is', 'registered', 'and', 'protected.', '', 'If', 'it', 'is', 'your']
+			if " ".join(message.params[1:]).startswith("This nickname is registered and protected."):
+				if self.bot.config.get("nickserv.password"):
+					self.nickserv.identify(self.bot.config.get("nickserv.password"))

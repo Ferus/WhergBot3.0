@@ -144,6 +144,9 @@ class Bot(object):
 			port = self.config.get("port")
 			self.ircsock.connect(host, port)
 			logger.info("[Bot {0}]: Initializing connection.".format(self.name))
+			if self.config.get("server_password"):
+				self.ircsock.serverpassword(self.config.get("server_password"))
+
 		except Exception as e:
 			logger.exception("[Bot {0}]: Error connecting to server, waiting 15 seconds.".format(self.name))
 			time.sleep(15)
@@ -246,7 +249,7 @@ if __name__ == '__main__':
 		_config.close()
 
 	for key, config in configs.items():
-		if config.get("enabled"):
+		if config.get("enabled")[0]:
 			logger.info("[Bot {0}]: We are now being loaded!".format(key))
 			configObj = BotConfig(key, config)
 			bot = Bot(key, configObj)
